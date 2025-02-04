@@ -9,7 +9,7 @@ const client = new Client({
       device: "android",
     },
   },
-  presence: (shardId) => ({
+  presence: () => ({
     status: PresenceUpdateStatus.Online,
     activities: [
       {
@@ -24,10 +24,11 @@ const client = new Client({
 
 const InitMain = async () => {
   try {
-    await client.start();
-    await client.uploadCommands({ cachePath: "./commands.json" });
+    client.start().then(() => {
+      client.uploadCommands({ cachePath: "./commands.json" });
+    });
   } catch (error) {
-    client.logger.fatal(error);
+    client.logger.fatal(error, "Isi Token nya bang!");
     process.exit(1);
   }
 };
