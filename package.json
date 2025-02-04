@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^16.4.7",
+    "mongoose": "^8.9.7",
     "seyfert": "^2.2.0"
   },
   "devDependencies": {
