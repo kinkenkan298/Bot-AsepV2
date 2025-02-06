@@ -16,7 +16,7 @@
     "typescript": "^5.7.3"
   },
   "scripts": {
-    "dev": "nodemon",
+    "dev": "tsx ./src/index.ts --debug --dev",
     "build": "tsc",
     "start": "node ."
   },

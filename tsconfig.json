@@ -1,22 +1,66 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "strict": true,
-    "noImplicitAny": true,
-    "declaration": false,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
+    "target": "ESNext",
+    "lib": [
+      "ESNext"
+    ],
     "experimentalDecorators": true,
-    "outDir": "dist"
+    "emitDecoratorMetadata": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "removeComments": true,
+    "noEmitOnError": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitOverride": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "paths": {
+      "#asep/client": [
+        "./src/structures/client/AsepClient.ts"
+      ],
+      "#asep/types": [
+        "./src/structures/utils/types/index.ts"
+      ],
+      "#asep/classes": [
+        "./src/structures/utils/classes/index.ts"
+      ],
+      "#asep/middlwares": [
+        "./src/middlewares/index.ts"
+      ],
+      "#asep/errors": [
+        "./src/structures/utils/Errors.ts"
+      ],
+      "#asep/decorators": [
+        "./src/structures/utils/Decorators.ts"
+      ],
+      "#asep/listeners": [
+        "./src/structures/listeners/index.ts"
+      ],
+      "#asep/index": [
+        "./src/index.ts"
+      ],
+      "#asep/data/*": [
+        "./src/structures/utils/data/*"
+      ],
+      "#asep/utils/*": [
+        "./src/structures/utils/*"
+      ],
+    }
   },
   "include": [
-    "src"
+    "./src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }
