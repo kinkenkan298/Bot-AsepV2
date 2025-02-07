@@ -1,12 +1,12 @@
+import { commandsBot } from "#asep/data/Constants.js";
 import { type CommandContext, Declare, Embed, SubCommand } from "seyfert";
-import { commandsBot } from "../../constant/help";
 
 @Declare({
   name: "perintah",
   description: "Cek perintah apa saja yang tersedia",
 })
 export class PerintahCommand extends SubCommand {
-  async run(ctx: CommandContext) {
+  public override async run(ctx: CommandContext) {
     await ctx.deferReply();
     const embed = new Embed({
       author: {

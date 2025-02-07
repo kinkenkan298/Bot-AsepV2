@@ -4,15 +4,14 @@ import {
   ApplicationCommandType,
   PresenceUpdateStatus,
 } from "seyfert/lib/types/index.js";
-import { IAsepConfiguration } from "#asep/utils/types/client/AsepConfig.js";
 import { Configuration } from "#asep/data/Configuration.js";
 import { AsepMiddleware } from "#asep/middlwares";
 import { HandleCommand } from "seyfert/lib/commands/handle.js";
 import { Yuna } from "yunaforseyfert";
-import { NonGlobalCommands } from "#asep/types";
+import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
 
-export class AsepClient extends Client {
-  public readonly cooldown: LimitedCollection<string, number> =
+export class AsepClient extends Client<true> {
+  public readonly cooldowns: LimitedCollection<string, number> =
     new LimitedCollection();
 
   public readonly config: IAsepConfiguration = Configuration;
@@ -22,7 +21,7 @@ export class AsepClient extends Client {
     super({
       globalMiddlewares: ["checkCooldown"],
       allowedMentions: {
-        replied_user: true,
+        replied_user: false,
         parse: ["roles"],
       },
       components: {

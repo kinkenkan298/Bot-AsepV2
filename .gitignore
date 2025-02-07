@@ -1,5 +1,8 @@
 node_modules
 dist
+logs
 .commandkit
 .env
 .DS_Store
+commands.json
+settings.json

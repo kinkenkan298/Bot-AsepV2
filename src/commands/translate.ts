@@ -24,14 +24,14 @@ const options = {
 })
 @Options(options)
 export default class TranslateCommand extends Command {
-  async run(ctx: CommandContext<typeof options>) {
+  public override async run(ctx: CommandContext<typeof options>) {
     const to = ctx.options.to;
 
     await ctx.editOrReply({
       content: "Ke bahasa : " + to,
     });
   }
-  async onRunError(ctx: CommandContext, error: unknown) {
+  public override async onRunError(ctx: CommandContext, error: unknown) {
     ctx.client.logger.fatal(error);
     await ctx.write({
       content: "error bg bentr",

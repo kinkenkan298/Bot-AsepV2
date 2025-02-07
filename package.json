@@ -7,14 +7,14 @@
     "dotenv": "^16.4.7",
     "mongoose": "^8.9.7",
     "seyfert": "^2.2.0",
+    "typescript": "^5.7.3",
     "yunaforseyfert": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.0",
     "nodemon": "^3.1.9",
     "tsc": "^2.0.4",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "tsx": "^4.19.2"
   },
   "scripts": {
     "dev": "tsx ./src/index.ts --debug --dev",

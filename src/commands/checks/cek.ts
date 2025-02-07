@@ -1,6 +1,6 @@
 import { Command, Declare, Options } from "seyfert";
-import { PerintahCommand } from "./perintah.command";
-import { RoleCommand } from "./role.command";
+import { PerintahCommand } from "./perintah.command.js";
+import { RoleCommand } from "./role.command.js";
 
 @Declare({
   name: "cek",

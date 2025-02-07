@@ -1,3 +1,4 @@
+import { Configuration } from "#asep/data/Configuration.js";
 import {
   SubCommand,
   type CommandContext,
@@ -21,7 +22,7 @@ const options = {
 })
 @Options(options)
 export class RoleCommand extends SubCommand {
-  async run(ctx: CommandContext<typeof options>) {
+  public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
 
     const user = ctx.options.user;
@@ -38,7 +39,7 @@ export class RoleCommand extends SubCommand {
       },
       title: `Role untuk : ${Formatter.bold(ctx.author.name)} `,
       description: roles,
-      color: 0x00b0f4,
+      color: Configuration.colors.success,
       footer: {
         text: "Asep V2",
         icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
