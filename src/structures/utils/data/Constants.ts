@@ -1,5 +1,3 @@
-export const prefix: string[] = [".", "!", "?"];
-
 export const responses: string[] = [
   "Jaga bicara, ya!",
   "Kata-kata seperti itu tidak baik.",

@@ -17,6 +17,9 @@ importers:
       seyfert:
         specifier: ^2.2.0
         version: 2.2.0
+      yunaforseyfert:
+        specifier: ^1.1.0
+        version: 1.1.0
     devDependencies:
       '@types/node':
         specifier: ^22.13.0
@@ -422,6 +425,9 @@ packages:
     resolution: {integrity: sha512-jlf/foYIKywAt3x/XWKZ/3rz8OSJPiWktjmk891alJUEjiVxKX9LEO92qH3hv4aJ0mN3MWPvGMCy8jQi95xK4w==}
     engines: {node: '>=18'}
 
+  yunaforseyfert@1.1.0:
+    resolution: {integrity: sha512-eWNk9IKqdoQ3pmxRWv6fpNgM0zvysoFGKY0LstdhaLHzBW9Jq6P9W9lr3NmMiak0Gr5XGvK9Woez7Q7+7Zfo4Q==}
+
 snapshots:
 
   '@esbuild/aix-ppc64@0.23.1':
@@ -734,3 +740,5 @@ snapshots:
     dependencies:
       tr46: 5.0.0
       webidl-conversions: 7.0.0
+
+  yunaforseyfert@1.1.0: {}

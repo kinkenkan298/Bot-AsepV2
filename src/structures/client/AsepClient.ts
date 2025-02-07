@@ -1,14 +1,19 @@
 import { Client, LimitedCollection } from "seyfert";
-import { prefix } from "../utils/data/Constants.js";
 import {
   ActivityType,
   ApplicationCommandType,
   PresenceUpdateStatus,
 } from "seyfert/lib/types/index.js";
+import { IAsepConfiguration } from "#asep/utils/types/client/AsepConfig.js";
+import { Configuration } from "#asep/data/Configuration.js";
 
 export class AsepClient extends Client {
   public readonly cooldown: LimitedCollection<string, number> =
     new LimitedCollection();
+
+  public readonly config: IAsepConfiguration = Configuration;
+  public readonly readyTimestamps: number = 0;
+
   constructor() {
     super({
       //globalMiddlewares: ["checkCooldowns"],
@@ -22,7 +27,9 @@ export class AsepClient extends Client {
       commands: {
         reply: () => true,
         prefix: () => {
-          return [...prefix];
+          return [
+            ...new Set([...this.config.defaultPrefix, ...this.config.prefixes]),
+          ];
         },
       },
       presence: () => ({
