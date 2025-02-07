@@ -1,6 +1,7 @@
 import { Configuration } from "#asep/data/Configuration.js";
 import { getCollectionKey } from "#asep/utils/functions/utils.js";
 import { createMiddleware, Embed } from "seyfert";
+import { MessageFlags } from "seyfert/lib/types/index.js";
 
 export const checkCooldown = createMiddleware<void>(
   async ({ context, next, pass }) => {
@@ -16,9 +17,10 @@ export const checkCooldown = createMiddleware<void>(
     const data = cooldowns.get(getCollectionKey(context));
     if (data && time < data) {
       context.editOrReply({
+        flags: MessageFlags.Ephemeral,
         embeds: [
           new Embed({
-            description: `Tolong tunggu ${data} detik lagi!!`,
+            description: `Kamu harus menunggu <t:${Math.floor(data / 1000)}:R>: (<t:${time}:t>) untuk menggunakan nya lagi !`,
             color: Configuration.colors.errors,
           }),
         ],
