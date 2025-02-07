@@ -6,6 +6,10 @@ import {
 } from "seyfert/lib/types/index.js";
 import { IAsepConfiguration } from "#asep/utils/types/client/AsepConfig.js";
 import { Configuration } from "#asep/data/Configuration.js";
+import { AsepMiddleware } from "#asep/middlwares";
+import { HandleCommand } from "seyfert/lib/commands/handle.js";
+import { Yuna } from "yunaforseyfert";
+import { NonGlobalCommands } from "#asep/types";
 
 export class AsepClient extends Client {
   public readonly cooldown: LimitedCollection<string, number> =
@@ -16,7 +20,7 @@ export class AsepClient extends Client {
 
   constructor() {
     super({
-      //globalMiddlewares: ["checkCooldowns"],
+      globalMiddlewares: ["checkCooldown"],
       allowedMentions: {
         replied_user: true,
         parse: ["roles"],
@@ -47,10 +51,34 @@ export class AsepClient extends Client {
 
       if (command.type === ApplicationCommandType.PrimaryEntryPoint)
         return command;
-      //if (command.onlyDeveloper) (command as NonCommandOptions).
+      if (command.onlyDeveloper)
+        (command as NonGlobalCommands).guildId = this.config.guildIds;
 
       return command;
     };
+
+    this.setServices({
+      middlewares: AsepMiddleware,
+      cache: {
+        disabledCache: {
+          bans: true,
+          emojis: true,
+          stickers: true,
+        },
+      },
+      handleCommand: class extends HandleCommand {
+        override argsParser = Yuna.parser({
+          logResult: true,
+          syntax: {
+            namedOptions: ["-", "--"],
+          },
+        });
+        override resolveCommandFromContent = Yuna.resolver({
+          client: this.client,
+          logResult: true,
+        });
+      },
+    });
 
     await this.start();
 
