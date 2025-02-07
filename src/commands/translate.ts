@@ -8,11 +8,12 @@ import {
 } from "seyfert";
 
 const options = {
-  from: createStringOption({
-    description: "dari bahasa apa teks nya?",
-  }),
   to: createStringOption({
     description: "mau di translate ke bahasa apa",
+    required: true,
+  }),
+  kalimat: createStringOption({
+    description: "Kalimat yang mau di translate",
   }),
 };
 
@@ -21,12 +22,12 @@ const options = {
   description: "translate your language",
   aliases: ["tr"],
   contexts: ["Guild"],
-  ignore: IgnoreCommand.Slash,
 })
 @Options(options)
 export default class TranslateCommand extends Command {
   public override async run(ctx: CommandContext<typeof options>) {
     const { to } = ctx.options;
+    const msg = (await ctx.message?.fetch())?.referencedMessage?.content;
 
     await ctx.editOrReply({
       content: "Ke bahasa : " + to,

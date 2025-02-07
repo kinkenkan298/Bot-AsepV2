@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@slipher/cooldown':
+        specifier: ^0.0.2
+        version: 0.0.2
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -185,6 +188,9 @@ packages:
 
   '@mongodb-js/saslprep@1.1.9':
     resolution: {integrity: sha512-tVkljjeEaAhCqTzajSdgbQ6gE6f3oneVwa3iXR6csiEwXXOFsiC6Uh9iAjAhXPtqa/XMDHWjjeNH/77m/Yq2dw==}
+
+  '@slipher/cooldown@0.0.2':
+    resolution: {integrity: sha512-oOTwBurkFfnqQfsa7i9H3gEeHQkXgaTxJfXO+HsANGVlfdi0ccearqTaAAvU0JlitqZZnp5HWabHctzkGcsaBw==}
 
   '@types/node@22.13.0':
     resolution: {integrity: sha512-ClIbNe36lawluuvq3+YYhnIN2CELi+6q8NpnM7PYp4hBn/TatfboPgVSm2rwKRfnV2M+Ty9GWDFI64KEe+kysA==}
@@ -505,6 +511,10 @@ snapshots:
   '@mongodb-js/saslprep@1.1.9':
     dependencies:
       sparse-bitfield: 3.0.3
+
+  '@slipher/cooldown@0.0.2':
+    dependencies:
+      seyfert: 2.2.0
 
   '@types/node@22.13.0':
     dependencies:

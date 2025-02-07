@@ -1,5 +1,4 @@
-import { AsepOptions } from "#asep/decorators";
-import { AsepCategory } from "#asep/types";
+import { Cooldown, CooldownType } from "@slipher/cooldown";
 import { Command, type CommandContext, Declare, Embed } from "seyfert";
 
 @Declare({
@@ -8,9 +7,12 @@ import { Command, type CommandContext, Declare, Embed } from "seyfert";
   contexts: ["Guild"],
   integrationTypes: ["GuildInstall"],
 })
-@AsepOptions({
-  cooldown: 5,
-  category: AsepCategory.User,
+@Cooldown({
+  interval: 10000,
+  type: CooldownType.User,
+  uses: {
+    default: 1,
+  },
 })
 export default class PingCommand extends Command {
   public override async run(ctx: CommandContext): Promise<void> {
