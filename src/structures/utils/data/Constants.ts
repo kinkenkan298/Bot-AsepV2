@@ -1,3 +1,5 @@
+import { ApplicationCommandOptionType } from "seyfert/lib/types/index.js";
+
 export const responses: string[] = [
   "Jaga bicara, ya!",
   "Kata-kata seperti itu tidak baik.",
@@ -261,3 +263,25 @@ export const listIsoLanguages = {
   zap: "Zapotec",
   zu: "Zulu",
 };
+export const SemuaPesan = {
+  events: {
+    invalidOptions: ({ options, list }: TOptions) =>
+      `\`❌\` Invalid command options or arguments.\n-# - **Required**: \`<>\`\n-# - **Optional**: \`[]\`\n\n\`📋\` **Usage**:\n ${options}\n\`📢\` **Options Available**:\n${list}`,
+    optionTypes: {
+      [ApplicationCommandOptionType.Subcommand]: "subcommand",
+      [ApplicationCommandOptionType.SubcommandGroup]: "subcommand group",
+      [ApplicationCommandOptionType.String]: "string",
+      [ApplicationCommandOptionType.Integer]: "integer",
+      [ApplicationCommandOptionType.Boolean]: "boolean",
+      [ApplicationCommandOptionType.User]: "@user",
+      [ApplicationCommandOptionType.Channel]: "#channel",
+      [ApplicationCommandOptionType.Role]: "@role",
+      [ApplicationCommandOptionType.Mentionable]: "@mentionable",
+      [ApplicationCommandOptionType.Number]: "number",
+      [ApplicationCommandOptionType.Attachment]: "attachment",
+    } satisfies Record<ApplicationCommandOptionType, string>,
+    commandsError:
+      "Terjadi kesalahan tidak terduga!! Tolong tunggu sebentar !!",
+  },
+};
+type TOptions = { options: string; list: string };

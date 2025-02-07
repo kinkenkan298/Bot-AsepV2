@@ -20,12 +20,13 @@ const options = {
   name: "translate",
   description: "translate your language",
   aliases: ["tr"],
+  contexts: ["Guild"],
   ignore: IgnoreCommand.Slash,
 })
 @Options(options)
 export default class TranslateCommand extends Command {
   public override async run(ctx: CommandContext<typeof options>) {
-    const to = ctx.options.to;
+    const { to } = ctx.options;
 
     await ctx.editOrReply({
       content: "Ke bahasa : " + to,

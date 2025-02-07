@@ -8,6 +8,7 @@ import { Configuration } from "#asep/data/Configuration.js";
 import { AsepMiddleware } from "#asep/middlwares";
 import { HandleCommand } from "seyfert/lib/commands/handle.js";
 import { Yuna } from "yunaforseyfert";
+import { onRunError, onOptionsError } from "#asep/utils/functions/overrides.js";
 import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
 
 export class AsepClient extends Client<true> {
@@ -25,7 +26,9 @@ export class AsepClient extends Client<true> {
         parse: ["roles"],
       },
       components: {
-        defaults: {},
+        defaults: {
+          onRunError,
+        },
       },
       commands: {
         reply: () => true,
@@ -33,6 +36,10 @@ export class AsepClient extends Client<true> {
           return [
             ...new Set([...this.config.defaultPrefix, ...this.config.prefixes]),
           ];
+        },
+        defaults: {
+          onOptionsError,
+          onRunError,
         },
       },
       presence: () => ({

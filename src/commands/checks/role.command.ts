@@ -1,4 +1,6 @@
 import { Configuration } from "#asep/data/Configuration.js";
+import { AsepOptions } from "#asep/decorators";
+import { AsepCategory } from "#asep/types";
 import {
   SubCommand,
   type CommandContext,
@@ -19,6 +21,10 @@ const options = {
 @Declare({
   name: "role",
   description: "cek role apa kamu!",
+})
+@AsepOptions({
+  cooldown: 5,
+  category: AsepCategory.User,
 })
 @Options(options)
 export class RoleCommand extends SubCommand {

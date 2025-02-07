@@ -1,9 +1,15 @@
 import { commandsBot } from "#asep/data/Constants.js";
+import { AsepOptions } from "#asep/decorators";
+import { AsepCategory } from "#asep/types";
 import { type CommandContext, Declare, Embed, SubCommand } from "seyfert";
 
 @Declare({
   name: "perintah",
   description: "Cek perintah apa saja yang tersedia",
+})
+@AsepOptions({
+  cooldown: 4,
+  category: AsepCategory.Guild,
 })
 export class PerintahCommand extends SubCommand {
   public override async run(ctx: CommandContext) {
