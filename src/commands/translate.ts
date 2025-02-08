@@ -1,8 +1,18 @@
+import { Configuration } from "#asep/data/Configuration.js";
+import {
+  GOOGLE_LOCALES,
+  GoogleLocales,
+  GoogleLocalesText,
+} from "#asep/data/Constants.js";
+import { splitTextByAmount } from "#asep/utils/functions/utils.js";
+import { getCode, Translator } from "google-translate-api-x";
 import {
   Command,
   CommandContext,
   createStringOption,
   Declare,
+  Embed,
+  Formatter,
   IgnoreCommand,
   Options,
 } from "seyfert";
@@ -10,10 +20,9 @@ import {
 const options = {
   to: createStringOption({
     description: "mau di translate ke bahasa apa",
-    required: true,
   }),
-  kalimat: createStringOption({
-    description: "Kalimat yang mau di translate",
+  from: createStringOption({
+    description: "mau di translate ke bahasa apa",
   }),
 };
 
@@ -22,21 +31,69 @@ const options = {
   description: "translate your language",
   aliases: ["tr"],
   contexts: ["Guild"],
+  ignore: IgnoreCommand.Slash,
 })
 @Options(options)
 export default class TranslateCommand extends Command {
   public override async run(ctx: CommandContext<typeof options>) {
     const { to } = ctx.options;
+    let tujuanBahasa = getCode(to || "en");
+    if (!tujuanBahasa) {
+      await ctx.editOrReply({
+        content: "Tolong masukan bahasa yang ada !",
+      });
+      return;
+    }
     const msg = (await ctx.message?.fetch())?.referencedMessage?.content;
+    if (!msg) {
+      await ctx.editOrReply({
+        content: "Text tidak ada bang!",
+      });
+      return;
+    }
 
-    await ctx.editOrReply({
-      content: "Ke bahasa : " + to,
+    const trans = new Translator({ to: tujuanBahasa });
+    const { text, from } = await trans.translate(msg);
+    let fromLanguagesText: string = from.language.iso;
+    if (from.language.iso in GoogleLocalesText) {
+      fromLanguagesText = GoogleLocalesText[fromLanguagesText];
+    }
+    let toLanguagesText: string = GoogleLocalesText[tujuanBahasa];
+
+    const embed = new Embed({
+      author: {
+        name: ctx.author.username,
+        icon_url: ctx.author.avatarURL(),
+      },
+      color: Configuration.colors.success,
+      footer: {
+        text: "Asep V2",
+        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
+      },
+      timestamp: new Date(Date.now()).toISOString(),
+      title: `Translated from ${fromLanguagesText} to ${toLanguagesText}`,
     });
-  }
-  public override async onRunError(ctx: CommandContext, error: unknown) {
-    ctx.client.logger.fatal(error);
-    await ctx.write({
-      content: "error bg bentr",
+    const totalLength = msg.length + text.length;
+    const title = Formatter.bold(`${fromLanguagesText} -> ${toLanguagesText}`);
+    if (totalLength <= 4000) {
+      const parts = splitTextByAmount(text, 1007, "");
+      embed.addFields([
+        {
+          name: title,
+          value: Formatter.codeBlock(parts.shift()! as string),
+        },
+      ]);
+      for (let part of parts) {
+        embed.addFields([
+          {
+            name: "\u200b",
+            value: Formatter.codeBlock(part),
+          },
+        ]);
+      }
+    }
+    await ctx.editOrReply({
+      embeds: [embed],
     });
   }
 }

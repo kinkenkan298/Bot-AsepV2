@@ -2,7 +2,7 @@ import { IAsepConfiguration } from "../types/client/AsepConfig.js";
 
 export const Configuration: IAsepConfiguration = {
   defaultPrefix: "asep",
-  prefixes: [".", "!", "?", "as!"],
+  prefixes: ["as!"],
   developerIds: [
     "1290584043896832054", // client id gwe
   ],

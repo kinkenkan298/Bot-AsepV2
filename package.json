@@ -6,6 +6,7 @@
   "dependencies": {
     "@slipher/cooldown": "^0.0.2",
     "dotenv": "^16.4.7",
+    "google-translate-api-x": "^10.7.2",
     "mongoose": "^8.9.7",
     "seyfert": "^2.2.0",
     "typescript": "^5.7.3",
