@@ -1,4 +1,13 @@
-import { ApplicationCommandOptionType } from "seyfert/lib/types/index.js";
+import { readFile } from "node:fs/promises";
+import {
+  ActivityType,
+  ApplicationCommandOptionType,
+  GatewayActivityUpdateData,
+} from "seyfert/lib/types/index.js";
+
+const packageJson = JSON.parse(await readFile("./package.json", "utf-8"));
+
+export const BOT_VERSION: string = packageJson.version;
 
 export const responses: string[] = [
   "Jaga bicara, ya!",
@@ -17,6 +26,11 @@ export const commandsBot: string = `
  **/translate <teks> <negara>**: untuk menejermahkan bahasa alien yang ada di guild
  **/tanyaasep <pertanyaan>**: untuk bertanya kepada asep
 `;
+
+export const BOT_ACTIVITIES: GatewayActivityUpdateData[] = [
+  { name: "Freedom", type: ActivityType.Listening },
+  { name: "Sedang dalam {guilds} guilds", type: ActivityType.Listening },
+];
 
 export const SemuaPesan = {
   events: {
