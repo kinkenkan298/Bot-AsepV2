@@ -1,8 +1,7 @@
-import { Configuration } from "#asep/data/Configuration.js";
 import AutoresponModel from "#asep/schemas/guilds/AutoresponModel.js";
+import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { Cooldown, CooldownType } from "@slipher/cooldown";
 import ms from "ms";
-import { Embed } from "seyfert";
 import {
   CommandContext,
   createStringOption,
@@ -43,17 +42,7 @@ export default class CreateSubcommand extends SubCommand {
     const { pesan, balesan } = options;
 
     const fetchData = await AutoresponModel.findOne({ guildId });
-    const embed = new Embed({
-      author: {
-        name: "Asep V2",
-        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
-      },
-      footer: {
-        text: "Asep V2 System",
-        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
-      },
-      timestamp: new Date(Date.now()).toISOString(),
-    });
+    const embed = new AsepEmbed({}, client);
     if (!fetchData) {
       const newData = new AutoresponModel({
         guildId,
@@ -71,7 +60,7 @@ export default class CreateSubcommand extends SubCommand {
             embed
               .setTitle("Pesan Otomatis berhasil di buat !")
               .setDescription(`Pesan: ${pesan}\nBalesan: ${balesan}`)
-              .setColor(Configuration.colors.success),
+              .setType("success"),
           ],
         });
       } catch (e) {
@@ -83,7 +72,7 @@ export default class CreateSubcommand extends SubCommand {
           embeds: [
             embed
               .setTitle("Terjadi kesalahan dalam menyimpan ke database!")
-              .setColor(Configuration.colors.errors),
+              .setType("error"),
           ],
         });
       }
@@ -96,7 +85,7 @@ export default class CreateSubcommand extends SubCommand {
           embeds: [
             embed
               .setTitle("Pesan yang ingin ditambahkan sudah tersedia!")
-              .setColor(Configuration.colors.errors),
+              .setType("error"),
           ],
         });
         return;
@@ -119,7 +108,7 @@ export default class CreateSubcommand extends SubCommand {
         embed
           .setTitle("Pesan Otomatis berhasil di buat !")
           .setDescription(`Pesan: ${pesan}\nBalesan: ${balesan}`)
-          .setColor(Configuration.colors.success),
+          .setType("success"),
       ],
     });
   }

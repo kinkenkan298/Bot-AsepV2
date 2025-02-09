@@ -1,4 +1,4 @@
-import { Configuration } from "#asep/data/Configuration.js";
+import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { Cooldown, CooldownType } from "@slipher/cooldown";
 import ms from "ms";
 import {
@@ -8,7 +8,6 @@ import {
   createUserOption,
   Options,
   Formatter,
-  Embed,
 } from "seyfert";
 
 const options = {
@@ -34,27 +33,20 @@ export class RoleCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
 
-    const user = ctx.options.user;
+    const { user } = ctx.options;
     const getRoles = await (await ctx.guild())?.members.fetch(user?.id);
     const roles = (await getRoles?.roles.list())
       ?.filter((role) => role.name !== "@everyone")
       .map((role) => Formatter.roleMention(role.id))
       .join(" - ");
 
-    const embed = new Embed({
-      author: {
-        name: ctx.author.username,
-        icon_url: ctx.author.avatarURL(),
+    const embed = new AsepEmbed(
+      {
+        title: `Role untuk : ${Formatter.bold(ctx.author.name)} `,
+        description: roles,
       },
-      title: `Role untuk : ${Formatter.bold(ctx.author.name)} `,
-      description: roles,
-      color: Configuration.colors.success,
-      footer: {
-        text: "Asep V2",
-        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
-      },
-      timestamp: new Date(Date.now()).toISOString(),
-    });
+      ctx.client,
+    );
     await ctx.editOrReply({
       embeds: [embed],
     });

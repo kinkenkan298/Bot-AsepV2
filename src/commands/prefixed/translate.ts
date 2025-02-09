@@ -1,5 +1,6 @@
 import { Configuration } from "#asep/data/Configuration.js";
 import { GoogleLocalesText } from "#asep/data/Constants.js";
+import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { splitTextByAmount } from "#asep/utils/functions/utils.js";
 import { getCode, Translator } from "google-translate-api-x";
 import {
@@ -56,19 +57,12 @@ export default class TranslateCommand extends Command {
     }
     let toLanguagesText: string = GoogleLocalesText[tujuanBahasa];
 
-    const embed = new Embed({
-      author: {
-        name: ctx.author.username,
-        icon_url: ctx.author.avatarURL(),
+    const embed = new AsepEmbed(
+      {
+        title: `Translated from ${fromLanguagesText} to ${toLanguagesText}`,
       },
-      color: Configuration.colors.success,
-      footer: {
-        text: "Asep V2",
-        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
-      },
-      timestamp: new Date(Date.now()).toISOString(),
-      title: `Translated from ${fromLanguagesText} to ${toLanguagesText}`,
-    });
+      ctx.client,
+    );
     const totalLength = msg.length + text.length;
     const title = Formatter.bold(`${fromLanguagesText} -> ${toLanguagesText}`);
     if (totalLength <= 4000) {
