@@ -6,7 +6,7 @@ import { AutoLoad, Command, Declare } from "seyfert";
   name: "autorespon",
   description: "bikin pesan otomatis pada guild",
   contexts: ["Guild"],
-  defaultMemberPermissions: ["ManageGuild"],
+  defaultMemberPermissions: ["ManageGuild", "Administrator"],
 })
 @AutoLoad()
 @Cooldown({

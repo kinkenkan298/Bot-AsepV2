@@ -45,11 +45,11 @@ export default class CreateSubcommand extends SubCommand {
     const fetchData = await AutoresponModel.findOne({ guildId });
     const embed = new Embed({
       author: {
-        name: ctx.author.username,
-        icon_url: ctx.author.avatarURL(),
+        name: "Asep V2",
+        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
       },
       footer: {
-        text: "Asep V2",
+        text: "Asep V2 System",
         icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
       },
       timestamp: new Date(Date.now()).toISOString(),
