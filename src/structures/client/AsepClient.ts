@@ -10,7 +10,6 @@ import { HandleCommand } from "seyfert/lib/commands/handle.js";
 import { Yuna } from "yunaforseyfert";
 import { onRunError, onOptionsError } from "#asep/utils/functions/overrides.js";
 import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
-import { AsepDatabase } from "./modules/Database.js";
 import { CooldownManager } from "@slipher/cooldown";
 import { ASEP_MIKIR } from "#asep/data/Constants.js";
 
@@ -19,7 +18,6 @@ export class AsepClient extends Client<true> {
 
   public readonly config: IAsepConfiguration = Configuration;
   public readyTimestamp: number = 0;
-  public readonly database: AsepDatabase;
 
   constructor() {
     super({
@@ -55,7 +53,6 @@ export class AsepClient extends Client<true> {
         activities: [{ name: "Asep V2", type: ActivityType.Listening }],
       }),
     });
-    this.database = new AsepDatabase(this);
     this.cooldown = new CooldownManager(this);
 
     this.run();

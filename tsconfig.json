@@ -30,9 +30,6 @@
       "#asep/types": [
         "./src/structures/utils/types/index.ts"
       ],
-      "#asep/classes": [
-        "./src/structures/utils/classes/index.ts"
-      ],
       "#asep/middlwares": [
         "./src/middlewares/index.ts"
       ],
@@ -53,6 +50,9 @@
       ],
       "#asep/utils/*": [
         "./src/structures/utils/*"
+      ],
+      "#asep/schemas/*": [
+        "./src/structures/schemas/*"
       ],
     }
   },
