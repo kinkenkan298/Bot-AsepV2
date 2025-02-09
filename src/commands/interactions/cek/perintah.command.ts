@@ -1,7 +1,8 @@
 import { commandsBot } from "#asep/data/Constants.js";
+import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { Cooldown, CooldownType } from "@slipher/cooldown";
 import ms from "ms";
-import { type CommandContext, Declare, Embed, SubCommand } from "seyfert";
+import { type CommandContext, Declare, SubCommand } from "seyfert";
 
 @Declare({
   name: "perintah",
@@ -17,20 +18,13 @@ import { type CommandContext, Declare, Embed, SubCommand } from "seyfert";
 export class PerintahCommand extends SubCommand {
   public override async run(ctx: CommandContext) {
     await ctx.deferReply();
-    const embed = new Embed({
-      author: {
-        name: "Asep V2",
-        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
+    const embed = new AsepEmbed(
+      {
+        title: "Berikut perintah yang tersedia pada bot",
+        description: commandsBot,
       },
-      title: "Berikut perintah yang tersedia pada bot",
-      description: commandsBot,
-      color: 0x00b0f4,
-      footer: {
-        text: "Asep V2",
-        icon_url: "https://i.ibb.co.com/n80TYD2w/xiao.jpg",
-      },
-      timestamp: new Date(Date.now()).toISOString(),
-    });
+      ctx.client,
+    );
     await ctx.editOrReply({
       embeds: [embed],
     });

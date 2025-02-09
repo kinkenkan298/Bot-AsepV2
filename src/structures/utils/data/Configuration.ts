@@ -20,8 +20,10 @@ export const Configuration: IAsepConfiguration = {
     errorsIds: "",
   },
   colors: {
-    success: 0x00b0f4,
+    info: 0x00b0f4,
     errors: 0xf72c5b,
     extra: 0x89a8b2,
+    success: 0x6ec207,
+    warn: 0xfcc737,
   },
 };

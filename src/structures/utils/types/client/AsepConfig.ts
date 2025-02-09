@@ -2,6 +2,8 @@ interface IAsepColors {
   success: number;
   errors: number;
   extra: number;
+  warn: number;
+  info: number;
 }
 
 interface IAsepCache {
