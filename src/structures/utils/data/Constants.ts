@@ -9,7 +9,7 @@ const packageJson = JSON.parse(await readFile("./package.json", "utf-8"));
 
 export const BOT_VERSION: string = packageJson.version;
 
-export const responses: string[] = [
+export const responsesToxic: string[] = [
   "Jaga bicara, ya!",
   "Kata-kata seperti itu tidak baik.",
   "Ayo bicara dengan sopan.",
@@ -26,6 +26,13 @@ export const commandsBot: string = `
  **/translate <teks> <negara>**: untuk menejermahkan bahasa alien yang ada di guild
  **/tanyaasep <pertanyaan>**: untuk bertanya kepada asep
 `;
+
+export const ASEP_MIKIR: string[] = [
+  "sedang memprosess ...",
+  "sedang berak ...",
+  "lagi mikir ...",
+  "nahan boker ....",
+];
 
 export const BOT_ACTIVITIES: GatewayActivityUpdateData[] = [
   { name: "Freedom", type: ActivityType.Listening },

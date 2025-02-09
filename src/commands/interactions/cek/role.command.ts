@@ -1,6 +1,6 @@
 import { Configuration } from "#asep/data/Configuration.js";
-import { AsepOptions } from "#asep/decorators";
-import { AsepCategory } from "#asep/types";
+import { Cooldown, CooldownType } from "@slipher/cooldown";
+import ms from "ms";
 import {
   SubCommand,
   type CommandContext,
@@ -22,9 +22,12 @@ const options = {
   name: "role",
   description: "cek role apa kamu!",
 })
-@AsepOptions({
-  cooldown: 5,
-  category: AsepCategory.User,
+@Cooldown({
+  interval: ms("5s"),
+  type: CooldownType.User,
+  uses: {
+    default: 2,
+  },
 })
 @Options(options)
 export class RoleCommand extends SubCommand {

@@ -1,4 +1,5 @@
 import { Cooldown, CooldownType } from "@slipher/cooldown";
+import ms from "ms";
 import { Command, type CommandContext, Declare, Embed } from "seyfert";
 
 @Declare({
@@ -8,7 +9,7 @@ import { Command, type CommandContext, Declare, Embed } from "seyfert";
   integrationTypes: ["GuildInstall"],
 })
 @Cooldown({
-  interval: 10000,
+  interval: ms("10s"),
   type: CooldownType.User,
   uses: {
     default: 1,

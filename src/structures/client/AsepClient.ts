@@ -1,4 +1,4 @@
-import { Client, LimitedCollection } from "seyfert";
+import { Client } from "seyfert";
 import {
   ActivityType,
   ApplicationCommandType,
@@ -12,6 +12,7 @@ import { onRunError, onOptionsError } from "#asep/utils/functions/overrides.js";
 import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
 import { AsepDatabase } from "./modules/Database.js";
 import { CooldownManager } from "@slipher/cooldown";
+import { ASEP_MIKIR } from "#asep/data/Constants.js";
 
 export class AsepClient extends Client<true> {
   public cooldown: CooldownManager;
@@ -39,6 +40,9 @@ export class AsepClient extends Client<true> {
             ...new Set([...this.config.defaultPrefix, ...this.config.prefixes]),
           ];
         },
+        deferReplyResponse: ({ client }) => ({
+          content: `<a:typing:1214253750093488149> **${client.me.username}** ${ASEP_MIKIR[Math.round(Math.random() * ASEP_MIKIR.length)]}`,
+        }),
         defaults: {
           onOptionsError,
           onRunError,
@@ -102,7 +106,7 @@ export class AsepClient extends Client<true> {
       await this.commands?.reloadAll();
       await this.events?.reloadAll();
       await this.components?.reloadAll();
-      await this.uploadCommands({ cachePath: "./commands.json" });
+      await this.uploadCommands({ cachePath: this.config.cache.filename });
 
       this.logger.info("Berhasil memuat ulang bot apps");
     } catch (err) {

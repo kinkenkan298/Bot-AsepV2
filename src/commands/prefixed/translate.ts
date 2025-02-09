@@ -1,9 +1,5 @@
 import { Configuration } from "#asep/data/Configuration.js";
-import {
-  GOOGLE_LOCALES,
-  GoogleLocales,
-  GoogleLocalesText,
-} from "#asep/data/Constants.js";
+import { GoogleLocalesText } from "#asep/data/Constants.js";
 import { splitTextByAmount } from "#asep/utils/functions/utils.js";
 import { getCode, Translator } from "google-translate-api-x";
 import {
