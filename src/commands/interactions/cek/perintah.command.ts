@@ -2,7 +2,7 @@ import { commandsBot } from "#asep/data/Constants.js";
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { Cooldown, CooldownType } from "@slipher/cooldown";
 import ms from "ms";
-import { type CommandContext, Declare, SubCommand } from "seyfert";
+import { type CommandContext, Declare, Formatter, SubCommand } from "seyfert";
 
 @Declare({
   name: "perintah",
@@ -21,7 +21,7 @@ export class PerintahCommand extends SubCommand {
     const embed = new AsepEmbed(
       {
         title: "Berikut perintah yang tersedia pada bot",
-        description: commandsBot,
+        description: Formatter.blockQuote(commandsBot.trim()),
       },
       ctx.client,
     );

@@ -1,5 +1,6 @@
 import { Configuration } from "#asep/data/Configuration.js";
 import { Embed, UsingClient } from "seyfert";
+import { EmbedColors } from "seyfert/lib/common/index.js";
 import { APIEmbed } from "seyfert/lib/types/index.js";
 
 type TypeEmbed = "info" | "success" | "error" | "extra" | "warn";
@@ -24,7 +25,7 @@ export class AsepEmbed extends Embed {
     };
     if (!this.data.fields) this.data.fields = [];
   }
-  setType(type: TypeEmbed = "info"): this {
+  setType(type?: TypeEmbed): this {
     switch (type) {
       case "success": {
         this.data.color = Configuration.colors.success;
@@ -44,6 +45,10 @@ export class AsepEmbed extends Embed {
       }
       case "warn": {
         this.data.color = Configuration.colors.warn;
+        break;
+      }
+      default: {
+        this.data.color = EmbedColors.Default;
         break;
       }
     }
