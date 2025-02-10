@@ -10,7 +10,6 @@ export class AsepEmbed extends Embed {
     super(data);
     this.client = client;
     this.data = {
-      ...data,
       author: {
         name: this.client.me.username,
         icon_url: this.client.me.avatarURL(),
@@ -19,8 +18,11 @@ export class AsepEmbed extends Embed {
         text: this.client.me.username,
         icon_url: this.client.me.avatarURL(),
       },
+      color: Configuration.colors.info,
       timestamp: new Date(Date.now()).toISOString(),
+      ...data,
     };
+    if (!this.data.fields) this.data.fields = [];
   }
   setType(type: TypeEmbed = "info"): this {
     switch (type) {
