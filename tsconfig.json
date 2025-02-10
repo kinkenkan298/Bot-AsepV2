@@ -24,6 +24,9 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "paths": {
+      "#/*": [
+        "./src/*"
+      ],
       "#asep/client": [
         "./src/structures/client/AsepClient.ts"
       ],
