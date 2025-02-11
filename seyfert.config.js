@@ -1,3 +1,4 @@
+// @ts-check
 import { config } from "seyfert";
 import "dotenv/config";
 import { GatewayIntentBits } from "seyfert/lib/types";
@@ -14,5 +15,6 @@ export default config.bot({
     base: "src",
     commands: "commands",
     events: "events",
+    components: "components",
   },
 });

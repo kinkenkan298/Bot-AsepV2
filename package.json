@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@slipher/cooldown": "^0.0.2",
+    "discord-api-types": "^0.37.119",
     "dotenv": "^16.4.7",
     "google-translate-api-x": "^10.7.2",
     "mongoose": "^8.9.7",

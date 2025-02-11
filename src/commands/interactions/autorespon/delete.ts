@@ -1,5 +1,5 @@
-import AutoresponModel from "#/structures/schemas/guilds/AutoresponModel.js";
-import { AsepEmbed } from "#/structures/utils/classes/AsepEmbed.js";
+import AutoresponModel from "#asep/structures/schemas/guilds/AutoresponModel.js";
+import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { Cooldown, CooldownType } from "@slipher/cooldown";
 import ms from "ms";
 import {
