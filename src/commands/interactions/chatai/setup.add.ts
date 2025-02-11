@@ -61,6 +61,7 @@ export class SetupAdd extends SubCommand {
           embeds: [
             embed
               .setTitle("Category channel sudah ada dalam database!")
+              .setDescription("Hapus jika ingin mengganti dengan yang lain!!")
               .setType("error"),
           ],
         });
