@@ -3,6 +3,7 @@ import {
   CommandContext,
   createChannelOption,
   Declare,
+  Formatter,
   Options,
   SubCommand,
 } from "seyfert";
@@ -28,43 +29,48 @@ export class SetupAdd extends SubCommand {
     const { category } = options;
     const embed = new AsepEmbed({}, client);
     try {
-      let fetchData = await ChatAIModel.findOne({ guildId, category });
-      if (!fetchData) {
+      let fetchData = await ChatAIModel.findOne({ guildId });
+      if (fetchData) {
+        const oldCategory = fetchData.category;
+        if (oldCategory === category.id) {
+          await ctx.editOrReply({
+            embeds: [
+              embed.setTitle('Category channel sudah ada di database!').setType('error')
+            ]
+          })
+        } else {
+          fetchData.category = category.id;
+          fetchData.save()
+          await ctx.editOrReply({
+            embeds: [
+              embed
+                .setTitle(`Category channel berhasil diupdate ke ${Formatter.channelMention(category.id)}`)
+                .setType('success')
+            ]
+          })
+        }
+      } else {
         const newData = new ChatAIModel({
           guildId,
-          category,
-        });
+          category: category.id
+        })
         try {
           await newData.save();
           await ctx.editOrReply({
             embeds: [
               embed
-                .setTitle("Berhasil menambahkan category untuk chatai!")
-                .setType("success"),
-            ],
-          });
+                .setTitle('Berhasil menambahkan category channel untuk chatai!')
+                .setType('success')
+            ]
+          })
         } catch (e) {
-          client.logger.error(
-            e,
-            "Terjadi kesalahan dalam menyimpan nya database!",
-          );
+          client.logger.error(e)
           await ctx.editOrReply({
             embeds: [
-              embed
-                .setTitle("Terjadi kesalahan dalam menyimpan ke database!")
-                .setType("error"),
-            ],
+              embed.setTitle('Terjadi kesalahan dalame menyimpan ke database!').setType('error')
+            ]
           });
         }
-      } else {
-        await ctx.editOrReply({
-          embeds: [
-            embed
-              .setTitle("Category channel sudah ada dalam database!")
-              .setDescription("Hapus jika ingin mengganti dengan yang lain!!")
-              .setType("error"),
-          ],
-        });
       }
     } catch (e) {
       client.logger.error(e);
