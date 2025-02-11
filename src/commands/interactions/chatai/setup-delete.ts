@@ -28,7 +28,7 @@ export class SetupDelete extends SubCommand {
     const { category } = options;
     const embed = new AsepEmbed({}, client);
     try {
-      let fetchData = await ChatAIModel.findOneAndDelete({ guildId, category });
+      let fetchData = await ChatAIModel.findOneAndDelete({ guildId, category: category.id });
       if (fetchData) {
         await ctx.editOrReply({
           embeds: [
