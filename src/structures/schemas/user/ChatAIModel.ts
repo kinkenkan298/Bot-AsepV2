@@ -15,11 +15,9 @@ const schema = new Schema<ChatAI>(
       {
         authorId: {
           type: String,
-          required: true,
         },
         channelId: {
           type: String,
-          required: true,
         },
       },
     ],

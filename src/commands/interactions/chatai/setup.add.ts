@@ -7,6 +7,7 @@ import {
   SubCommand,
 } from "seyfert";
 import { ChannelType } from "seyfert/lib/types/index.js";
+import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
 
 const options = {
   category: createChannelOption({
@@ -25,17 +26,45 @@ export class SetupAdd extends SubCommand {
     await ctx.deferReply();
     const { client, guildId, options } = ctx;
     const { category } = options;
+    const embed = new AsepEmbed({}, client);
     try {
-      const embed = new AsepEmbed(
-        {
-          title: "hai",
-        },
-        client,
-      );
-      await ctx.editOrReply({
-        content: "add",
-        embeds: [embed],
-      });
+      let fetchData = await ChatAIModel.findOne({ guildId, category });
+      if (!fetchData) {
+        const newData = new ChatAIModel({
+          guildId,
+          category,
+        });
+        try {
+          await newData.save();
+          await ctx.editOrReply({
+            embeds: [
+              embed
+                .setTitle("Berhasil menambahkan category untuk chatai!")
+                .setType("success"),
+            ],
+          });
+        } catch (e) {
+          client.logger.error(
+            e,
+            "Terjadi kesalahan dalam menyimpan nya database!",
+          );
+          await ctx.editOrReply({
+            embeds: [
+              embed
+                .setTitle("Terjadi kesalahan dalam menyimpan ke database!")
+                .setType("error"),
+            ],
+          });
+        }
+      } else {
+        await ctx.editOrReply({
+          embeds: [
+            embed
+              .setTitle("Category channel sudah ada dalam database!")
+              .setType("error"),
+          ],
+        });
+      }
     } catch (e) {
       client.logger.error(e);
     }
