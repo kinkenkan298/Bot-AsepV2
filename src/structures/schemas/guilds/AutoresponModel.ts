@@ -1,14 +1,5 @@
+import { IAutorespon } from "#asep/structures/utils/interfeces/IAutorespon.js";
 import { Schema, model } from "mongoose";
-
-interface IPesan {
-  pesan: string;
-  balesan: string;
-}
-
-interface IAutorespon {
-  guildId: string;
-  autorespon: IPesan[];
-}
 
 const AutoresponSchema = new Schema<IAutorespon>(
   {
