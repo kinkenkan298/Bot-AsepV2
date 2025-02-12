@@ -1,4 +1,4 @@
-import { AutoresponListener } from "#asep/listeners";
+import { AutoresponListener, ChatAIListerner } from "#asep/listeners";
 import { createEvent } from "seyfert";
 
 export default createEvent({
@@ -7,5 +7,6 @@ export default createEvent({
     if (message.author.bot) return;
 
     await AutoresponListener(client, message);
+    await ChatAIListerner(client, message)
   },
 });

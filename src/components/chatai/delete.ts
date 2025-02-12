@@ -9,7 +9,7 @@ export default class DeleteChatAIComponent extends ComponentCommand {
   }
   override async run(ctx: ComponentContext<typeof this.componentType>) {
     await ctx.deferReply();
-    const { client, guildId } = ctx;
+    const { client, guildId, interaction } = ctx;
     const findChatAi = await ChatAIModel.findOne({ guildId })
     if (!findChatAi) {
       await ctx.editOrReply({
@@ -19,10 +19,9 @@ export default class DeleteChatAIComponent extends ComponentCommand {
     }
     const authorId = ctx.author.id
     const channelsAuthor = findChatAi.channels
-    const guildCache = ctx.guild("cache");
     if (channelsAuthor.length !== 0) {
       for (const authorChannel of channelsAuthor) {
-        if (authorChannel.authorId == authorId) {
+        if (authorChannel.authorId === authorId) {
           await ctx.editOrReply({
             embeds: [new AsepEmbed({
               title: "Channel akan segera dihapus dalam 10detik!",
@@ -30,7 +29,7 @@ export default class DeleteChatAIComponent extends ComponentCommand {
             }, client).setType('error')]
           })
           setTimeout(async () => {
-            await guildCache?.channels.delete(authorChannel.channelId, "Hapus channel!")
+            await interaction.channel.delete()
             await ChatAIModel.findOneAndUpdate({ guildId }, { $pull: { channels: { authorId } } })
           }, 10000)
           return;
@@ -38,7 +37,10 @@ export default class DeleteChatAIComponent extends ComponentCommand {
       }
     }
     await ctx.editOrReply({
-      content: "Hai",
+      embeds: [new AsepEmbed({
+        title: "Kamu bukan pembuat channel ini!",
+        description: "Channel hanya bisa dihapus oleh yang membuat!!",
+      }, client).setType('error')]
     });
   }
 }

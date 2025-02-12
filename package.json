@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "type": "module",
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@slipher/cooldown": "^0.0.2",
     "dotenv": "^16.4.7",
     "google-translate-api-x": "^10.7.2",

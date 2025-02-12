@@ -11,6 +11,8 @@ export function validasiEnv() {
     throw new InvalidEnvironment("Tidak ada token discord bang !!");
   if (!process.env.MONGODB_URI)
     throw new InvalidEnvironment("Tolong isi URI MongoDB nya !!");
+  if (!process.env.APIKEY_GEMINI)
+    throw new InvalidEnvironment("Tolong API Gemini nya !!");
 
   return logger.info("Env aman tidak ada kesalahan ....");
 }
