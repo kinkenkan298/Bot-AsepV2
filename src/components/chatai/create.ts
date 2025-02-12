@@ -30,7 +30,7 @@ export default class ChatAIComponent extends ComponentCommand {
     const guildCache = ctx.guild("cache");
     if (channelsAuthor.length !== 0) {
       for (const authorChannel of channelsAuthor) {
-        if (authorChannel.authorId = authorId) {
+        if (authorChannel.authorId == authorId) {
           await ctx.editOrReply({
             content: "Channel mu sudah ada! Tolong cek kembali!"
           })
