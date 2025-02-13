@@ -15,25 +15,24 @@ export default class ChatAIComponent extends ComponentCommand {
     return ctx.customId === "chataiasep";
   }
   public override async run(ctx: ComponentContext<typeof this.componentType>) {
-    await ctx.deferReply();
     const { client, interaction, guildId } = ctx;
-    const findChatAi = await ChatAIModel.findOne({ guildId })
+    const findChatAi = await ChatAIModel.findOne({ guildId });
     if (!findChatAi) {
       await ctx.editOrReply({
-        content: "Category channel belom di set bang!"
+        content: "Category channel belom di set bang!",
       });
       return;
     }
-    const categoryId = findChatAi?.category
-    const authorId = ctx.author.id
-    const channelsAuthor = findChatAi.channels
+    const categoryId = findChatAi?.category;
+    const authorId = ctx.author.id;
+    const channelsAuthor = findChatAi.channels;
     const guildCache = ctx.guild("cache");
     if (channelsAuthor.length !== 0) {
       for (const authorChannel of channelsAuthor) {
         if (authorChannel.authorId == authorId) {
           await ctx.editOrReply({
-            content: "Channel mu sudah ada! Tolong cek kembali!"
-          })
+            content: "Channel mu sudah ada! Tolong cek kembali!",
+          });
           return;
         }
       }
@@ -56,12 +55,15 @@ export default class ChatAIComponent extends ComponentCommand {
         },
       ],
     });
-    const channelId = channel?.id
+    const channelId = channel?.id;
     const newChatChannel = {
       authorId,
-      channelId
-    }
-    await ChatAIModel.findOneAndUpdate({ guildId, category: categoryId }, { $push: { channels: newChatChannel } })
+      channelId,
+    };
+    await ChatAIModel.findOneAndUpdate(
+      { guildId, category: categoryId },
+      { $push: { channels: newChatChannel } },
+    );
     const ButtonDelete = new Button({
       style: ButtonStyle.Danger,
       label: "Hapus chat !",
@@ -80,9 +82,8 @@ export default class ChatAIComponent extends ComponentCommand {
       ],
       components: [btn],
     });
-    await ctx.editOrReply({
+    await ctx.author.write({
       content: "Berhasil buat channel khusus !",
     });
-
   }
 }

@@ -12,7 +12,7 @@ import {
 
 const options = {
   pesan: createStringOption({
-    description: "kaliamt yang nanti mentrigger balesan",
+    description: "kalimat yang nanti mentrigger balesan",
     required: true,
   }),
   balesan: createStringOption({
