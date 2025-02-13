@@ -36,6 +36,7 @@ export async function ChatAIListerner(client: UsingClient, message: Message) {
     for (const ChatChannel of findChannel.channels) {
       if (ChatChannel.channelId !== channelId) return;
       if (content.length > messageMaxContentLength) return;
+      if (ChatChannel.authorId !== author.id) return;
       await client.channels.typing(channelId)
       let prevMessages = await client.messages.list(channelId, {
         limit: 15
@@ -68,10 +69,14 @@ export async function ChatAIListerner(client: UsingClient, message: Message) {
         generationConfig: CONFIG_AI,
         history: historyChat
       })
-      const respon = await chats.sendMessage(content);
-      await message.reply({
-        content: respon.response.text()
-      })
+      const chatting = await chats.sendMessage(content);
+      const respon = chatting.response.text();
+      for (let i = 0; i < respon.length; i += messageMaxContentLength) {
+        const chunkMessage = respon.substring(i, i + messageMaxContentLength)
+        await message.reply({
+          content: chunkMessage
+        })
+      }
     }
   } catch (e) {
     client.logger.error(e);
