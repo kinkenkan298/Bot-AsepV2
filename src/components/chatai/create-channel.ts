@@ -4,6 +4,7 @@ import { ComponentCommand, ComponentContext } from "seyfert";
 import {
   ButtonStyle,
   ChannelType,
+  MessageFlags,
   OverwriteType,
 } from "seyfert/lib/types/index.js";
 import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
@@ -16,6 +17,7 @@ export default class ChatAIComponent extends ComponentCommand {
   }
   public override async run(ctx: ComponentContext<typeof this.componentType>) {
     const { client, interaction, guildId } = ctx;
+    await ctx.deferReply(true);
     const findChatAi = await ChatAIModel.findOne({ guildId });
     if (!findChatAi) {
       await ctx.editOrReply({
@@ -82,8 +84,12 @@ export default class ChatAIComponent extends ComponentCommand {
       ],
       components: [btn],
     });
+    await ctx.editOrReply({
+      content: "Silakan chat asep di channel yang sudah di sediakan!",
+      flags: MessageFlags.Ephemeral,
+    });
     await ctx.author.write({
-      content: "Berhasil buat channel khusus !",
+      content: "Berhasil buat channel pada tanggal: " + Date.now(),
     });
   }
 }
