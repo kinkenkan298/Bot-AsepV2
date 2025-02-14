@@ -8,7 +8,13 @@ export default createEvent({
   run: async (user, client) => {
     client.readyTimestamp = Date.now();
     try {
-      await mongoose.connect(process.env.MONGODB_URI!);
+      await mongoose.connect(process.env.MONGODB_URI!, {
+        serverApi: {
+          version: "1",
+          strict: true,
+          deprecationErrors: true,
+        },
+      });
       client.logger.info("[Asep - Database]: Koneksi Berhasil");
     } catch (err) {
       client.logger.error(err);
