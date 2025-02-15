@@ -22,9 +22,9 @@ export const responsesToxic: string[] = [
 export const commandsBot: string = `
  **/cek role @user**: Menampilkan role pengguna yang ditandai
  **/cek perintah**: Menampilkan daftar perintah yang didukung oleh bot
- **/kirimtiktok <url>**: untuk mengirim video tiktok
+ **/chatai**: perintah untuk chat dengan ai pribadi asep
+ **/atiktok <url>**: untuk mengirim video tiktok
  **/translate <teks> <negara>**: untuk menejermahkan bahasa alien yang ada di guild
- **/tanyaasep <pertanyaan>**: untuk bertanya kepada asep
 `;
 
 export const ASEP_MIKIR: string[] = [
@@ -42,7 +42,7 @@ export const BOT_ACTIVITIES: GatewayActivityUpdateData[] = [
 export const SemuaPesan = {
   events: {
     invalidOptions: ({ options, list }: TOptions) =>
-      `\`❌\` Invalid command options or arguments.\n-# - **Required**: \`<>\`\n-# - **Optional**: \`[]\`\n\n\`📋\` **Usage**:\n ${options}\n\`📢\` **Options Available**:\n${list}`,
+      `\`❌\` Opsi atau parameter yang diterima salah !.\n-# - **Required**: \`<>\`\n-# - **Optional**: \`[]\`\n\n\`📋\` **Cara pakai**:\n ${options}\n\`📢\` **Opsi yang tersedia!**:\n${list}`,
     optionTypes: {
       [ApplicationCommandOptionType.Subcommand]: "subcommand",
       [ApplicationCommandOptionType.SubcommandGroup]: "subcommand group",
