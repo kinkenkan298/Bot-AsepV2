@@ -1,6 +1,7 @@
 node_modules
 dist
 logs
+temp
 .commandkit
 .env
 .DS_Store
