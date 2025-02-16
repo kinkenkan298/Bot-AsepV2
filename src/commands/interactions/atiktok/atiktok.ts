@@ -1,7 +1,6 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
-import downloadFile from "#asep/structures/utils/functions/downloadFile.js";
-import { Downloader } from "@tobyg74/tiktok-api-dl";
-import { existsSync, statSync, unlinkSync } from "fs";
+import { scrapperTiktok } from "#asep/structures/utils/functions/tiktokdl.js";
+import { existsSync, unlinkSync } from "fs";
 import {
   Command,
   CommandContext,
@@ -37,67 +36,45 @@ export default class ATiktokCommand extends Command {
     const { url } = options;
     await ctx.deferReply();
     try {
-      const fetchTiktok = await Downloader(url.toString(), { version: "v1" });
-      if (!fetchTiktok.result || fetchTiktok.status === "error") {
-        await ctx.editOrReply({
-          embeds: [
-            new AsepEmbed(
-              {
-                title: "Terjadi kesalahan pada url tiktok nya!",
-                description: "Tolong periksa lagi url tiktok nya!",
-              },
-              client,
-            ).setType("error"),
-          ],
-        });
-      }
-      const result = fetchTiktok.result;
-      switch (result?.type) {
-        case "video": {
-          const urlDownload =
-            result?.video?.playAddr[0] ||
-            result.video?.playAddr[1] ||
-            result?.video?.playAddr[2];
-          if (!urlDownload) {
-            await ctx.editOrReply({
-              content: "Terjadi kesalahan dalam mendapatkan link download!",
-            });
-            return;
+      const getTiktok = await scrapperTiktok(url.toString());
+      if (!getTiktok[0]) throw new Error("error tidak diketahui!");
+      if (getTiktok.length === 1 && getTiktok[0].type === "video") {
+        const resultVideo = getTiktok[0];
+        let selected_variants = resultVideo.variants[0];
+        for (const variant of resultVideo.variants) {
+          if (variant.content_length > selected_variants.content_length) {
+            selected_variants = variant;
           }
-          const fileName = `tiktok-${Math.round(Math.random() * 1000)}-temp.mp4`;
-          let filePathTemp: string;
+        }
+        if (selected_variants.content_length >= 100 * 1024 * 1024) {
+          await ctx.editOrReply({
+            embeds: [
+              new AsepEmbed(
+                {
+                  title: "File berukuran terlalu besar!",
+                },
+                client,
+              ).setType("error"),
+            ],
+          });
+          return;
+        } else {
+          const fileName = selected_variants.file_name || "tiktok.mp4";
           try {
-            const filePath = await downloadFile(urlDownload, fileName);
-            const stats = statSync(filePath).size;
-            filePathTemp = filePath;
-            if (stats >= 100 * 1024 * 1024 || stats < 1024) {
-              await ctx.editOrReply({
-                embeds: [
-                  new AsepEmbed(
-                    {
-                      title: "File terlalu besar / kecil tidak bisa dikirim!",
-                      description: "Silakan pilih video yang lain!",
-                    },
-                    client,
-                  ),
-                ],
-              });
-              return;
-            }
-
-            const attachFileTiktok = new AttachmentBuilder()
-              .setFile("path", filePath)
-              .setName(fileName);
+            const tiktokAttach = new AttachmentBuilder()
+              .setName(fileName)
+              .setFile("path", selected_variants.uri_path);
             await ctx.editOrReply({
-              files: [attachFileTiktok],
+              files: [tiktokAttach],
             });
           } catch (e) {
             await ctx.editOrReply({
               embeds: [
                 new AsepEmbed(
                   {
-                    title: "Terjadi kesalahan dalam mengirim file!",
-                    description: "Periksa internet anda dan ulangi lagi!",
+                    title: "Terjadi kesalahan dalam mengirim file!!",
+                    description:
+                      "Tolong periksa ulang internet atau coba lagi nanti!",
                   },
                   client,
                 ).setType("error"),
@@ -105,26 +82,9 @@ export default class ATiktokCommand extends Command {
             });
             return;
           } finally {
-            setTimeout(() => {
-              if (existsSync(filePathTemp)) {
-                unlinkSync(filePathTemp);
-              }
-            }, 5000);
+            if (existsSync(selected_variants.uri_path))
+              unlinkSync(selected_variants.uri_path);
           }
-          break;
-        }
-        case "image": {
-          await ctx.editOrReply({
-            embeds: [
-              new AsepEmbed(
-                {
-                  title: "tipe image",
-                },
-                client,
-              ),
-            ],
-          });
-          break;
         }
       }
     } catch (e) {
