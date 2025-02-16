@@ -1,6 +1,7 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import downloadFile from "#asep/structures/utils/functions/downloadFile.js";
 import { Downloader } from "@tobyg74/tiktok-api-dl";
+import { statfsSync, statSync } from "node:fs";
 import {
   Command,
   CommandContext,
@@ -64,13 +65,44 @@ export default class ATiktokCommand extends Command {
             return;
           }
           const fileName = `tiktok-${Math.round(Math.random() * 1000)}-temp.mp4`;
-          const filePath = await downloadFile(urlDownload, fileName);
-          const attachFileTiktok = new AttachmentBuilder()
-            .setFile("path", filePath)
-            .setName(fileName);
-          await ctx.editOrReply({
-            files: [attachFileTiktok],
-          });
+          try {
+            const filePath = await downloadFile(urlDownload, fileName);
+            const stats = statSync(filePath).size;
+            if (stats >= 100 * 1024 * 1024 || stats < 1024) {
+              await ctx.editOrReply({
+                embeds: [
+                  new AsepEmbed(
+                    {
+                      title: "File terlalu besar / kecil tidak bisa dikirim!",
+                      description: "Silakan pilih video yang lain!",
+                    },
+                    client,
+                  ),
+                ],
+              });
+              return;
+            }
+
+            const attachFileTiktok = new AttachmentBuilder()
+              .setFile("path", filePath)
+              .setName(fileName);
+            await ctx.editOrReply({
+              files: [attachFileTiktok],
+            });
+          } catch (e) {
+            await ctx.editOrReply({
+              embeds: [
+                new AsepEmbed(
+                  {
+                    title: "Terjadi kesalahan dalam mengirim file!",
+                    description: "Periksa internet anda dan ulangi lagi!",
+                  },
+                  client,
+                ).setType("error"),
+              ],
+            });
+            return;
+          }
           break;
         }
         case "image": {
