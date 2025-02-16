@@ -1,7 +1,7 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import downloadFile from "#asep/structures/utils/functions/downloadFile.js";
 import { Downloader } from "@tobyg74/tiktok-api-dl";
-import { statfsSync, statSync } from "node:fs";
+import { existsSync, statSync, unlinkSync } from "fs";
 import {
   Command,
   CommandContext,
@@ -65,9 +65,11 @@ export default class ATiktokCommand extends Command {
             return;
           }
           const fileName = `tiktok-${Math.round(Math.random() * 1000)}-temp.mp4`;
+          let filePathTemp: string;
           try {
             const filePath = await downloadFile(urlDownload, fileName);
             const stats = statSync(filePath).size;
+            filePathTemp = filePath;
             if (stats >= 100 * 1024 * 1024 || stats < 1024) {
               await ctx.editOrReply({
                 embeds: [
@@ -102,6 +104,12 @@ export default class ATiktokCommand extends Command {
               ],
             });
             return;
+          } finally {
+            setTimeout(() => {
+              if (existsSync(filePathTemp)) {
+                unlinkSync(filePathTemp);
+              }
+            }, 5000);
           }
           break;
         }
