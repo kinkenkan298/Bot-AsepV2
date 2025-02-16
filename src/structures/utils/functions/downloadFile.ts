@@ -14,10 +14,11 @@ export default async function downloadFile(
     }
     const filePath = join(PathToDir, filename);
     const config: AxiosRequestConfig = {
+      url,
       method: "GET",
       responseType: "stream",
     };
-    const response: AxiosResponse = await axios(url, config);
+    const response: AxiosResponse = await axios(config);
     const writer = createWriteStream(filePath);
 
     response.data.pipe(writer);
