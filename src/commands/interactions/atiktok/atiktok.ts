@@ -32,7 +32,7 @@ const options = {
 @Options(options)
 export default class ATiktokCommand extends Command {
   public override async run(ctx: CommandContext<typeof options>) {
-    const { client, options } = ctx;
+    const { client, options, interaction } = ctx;
     const { url } = options;
     await ctx.deferReply();
     try {
@@ -84,6 +84,35 @@ export default class ATiktokCommand extends Command {
           } finally {
             if (existsSync(selected_variants.uri_path))
               unlinkSync(selected_variants.uri_path);
+          }
+        }
+      } else if (getTiktok.find((fd) => fd.type === "audio")) {
+        const batchFile = 10;
+        for (let i = 0; i < getTiktok.length; i += batchFile) {
+          const batch = getTiktok.slice(i, i + batchFile);
+          const image_path = [];
+          for (const item of batch) {
+            if (!item.variants[0]) throw new Error("error tidak diketahui!");
+            if (item.type === "image") {
+              image_path.push(
+                new AttachmentBuilder()
+                  .setName(item.variants[0].file_name || "tiktok-image.jpg")
+                  .setFile("path", item.variants[0].uri_path),
+              );
+            } else {
+              image_path.push(
+                new AttachmentBuilder()
+                  .setName(item.variants[0].file_name || "audio.mp3")
+                  .setFile("path", item.variants[0].uri_path),
+              );
+            }
+          }
+
+          if (image_path.length > 0) {
+            await interaction?.followup({
+              content: "hai",
+              files: image_path,
+            });
           }
         }
       }

@@ -8,10 +8,10 @@ export async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
     if (!fetchAPI.result || fetchAPI.status === "error") {
       throw new Error("Terjadi kesalahan dalam fetch API!");
     }
+    const variants: Variants[] = [];
     const result = fetchAPI?.result;
     switch (result.type) {
       case "video": {
-        const variants: Variants[] = [];
         const urlAPI =
           result.video?.playAddr[0] ||
           result.video?.playAddr[1] ||
@@ -30,12 +30,44 @@ export async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
         return [{ type: "video", variants: variants }];
       }
       case "image": {
-        const variants: Variants[] = [];
-        variants.push({
-          uri_path: "hai",
-          content_length: 28,
-        });
-        return [{ type: "image", variants: variants }];
+        if (!result.images)
+          throw new Error("Terjadi kesalahan dalam mendownload gambar!");
+        const resultImages = [];
+        for (const image of result.images) {
+          const fileName = `tiktok-${Math.round(Math.random() * 1000)}-temp.jpg`;
+          const filePath = await downloadFile(image, fileName);
+          const size = statSync(filePath).size;
+          const item: ItemVideo = {
+            type: "image",
+            variants: [
+              {
+                uri_path: filePath,
+                content_length: size,
+                file_name: fileName,
+              },
+            ],
+          };
+          resultImages.push(item);
+        }
+        const fileName = `audio-${Math.floor(Math.random() * 1000)}.mp3`;
+        const audioPath = await downloadFile(
+          result?.music?.playUrl[0],
+          fileName,
+        );
+        const size = statSync(audioPath).size;
+        const item: ItemVideo = {
+          type: "audio",
+          variants: [
+            {
+              uri_path: audioPath,
+              content_length: size,
+              music: result?.music.playUrl,
+              file_name: fileName,
+            },
+          ],
+        };
+        resultImages.push(item);
+        return resultImages;
       }
     }
   } catch (e) {
