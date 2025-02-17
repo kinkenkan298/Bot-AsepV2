@@ -1,6 +1,7 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { scrapperTiktok } from "#asep/structures/utils/functions/tiktokdl.js";
 import { existsSync, unlinkSync } from "fs";
+import ms from "ms";
 import {
   Command,
   CommandContext,
@@ -88,11 +89,13 @@ export default class ATiktokCommand extends Command {
         }
       } else if (getTiktok.find((fd) => fd.type === "audio")) {
         const batchFile = 10;
+        const tempPath: string[] = [];
         for (let i = 0; i < getTiktok.length; i += batchFile) {
           const batch = getTiktok.slice(i, i + batchFile);
           const image_path = [];
           for (const item of batch) {
             if (!item.variants[0]) throw new Error("error tidak diketahui!");
+            tempPath.push(item.variants[0].uri_path);
             if (item.type === "image") {
               image_path.push(
                 new AttachmentBuilder()
@@ -110,11 +113,15 @@ export default class ATiktokCommand extends Command {
 
           if (image_path.length > 0) {
             await interaction?.followup({
-              content: "hai",
               files: image_path,
             });
           }
         }
+        setTimeout(() => {
+          for (const pth of tempPath) {
+            if (existsSync(pth)) unlinkSync(pth);
+          }
+        }, ms("5s"));
       }
     } catch (e) {
       client.logger.error(e);
