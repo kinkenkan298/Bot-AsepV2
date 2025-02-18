@@ -39,6 +39,8 @@ export const BOT_ACTIVITIES: GatewayActivityUpdateData[] = [
   { name: "Sedang dalam {guilds} guilds", type: ActivityType.Listening },
 ];
 
+export const TiktokURLregex =
+  /https:\/\/(?:m|www|vm|vt|lite)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/;
 export const SemuaPesan = {
   events: {
     invalidOptions: ({ options, list }: TOptions) =>

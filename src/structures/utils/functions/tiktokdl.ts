@@ -1,7 +1,7 @@
 import downloadFile from "#asep/structures/utils/functions/downloadFile.js";
 import { Downloader } from "@tobyg74/tiktok-api-dl";
 import { statSync } from "fs";
-import { ItemVideo, Variants } from "../types/atiktok/ATiktok.js";
+import { ItemVideo, Variants } from "#asep/types";
 export async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
   try {
     const fetchAPI = await Downloader(url, { version: "v1" });

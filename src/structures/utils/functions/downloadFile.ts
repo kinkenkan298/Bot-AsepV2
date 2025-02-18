@@ -1,6 +1,8 @@
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { join } from "path/posix";
+import { join } from "path";
+
+const __dirname = import.meta.dirname;
 
 export default async function downloadFile(
   url: string,

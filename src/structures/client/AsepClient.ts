@@ -39,7 +39,9 @@ export class AsepClient extends Client<true> {
           ];
         },
         deferReplyResponse: ({ client }) => ({
-          content: `<a:typing:1214253750093488149> **${client.me.username}** ${ASEP_MIKIR[Math.round(Math.random() * ASEP_MIKIR.length)]}`,
+          content: `<a:typing:1341113719857352805> **${client.me.username}** ${
+            ASEP_MIKIR[Math.floor(Math.random() * ASEP_MIKIR.length)]
+          }`,
         }),
         defaults: {
           onOptionsError,

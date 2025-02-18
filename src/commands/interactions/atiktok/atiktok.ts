@@ -1,4 +1,5 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
+import { TiktokURLregex } from "#asep/structures/utils/data/Constants.js";
 import { scrapperTiktok } from "#asep/structures/utils/functions/tiktokdl.js";
 import { existsSync, unlinkSync } from "fs";
 import ms from "ms";
@@ -11,9 +12,6 @@ import {
   Options,
   AttachmentBuilder,
 } from "seyfert";
-
-const TiktokURLregex =
-  /https:\/\/(?:m|www|vm|vt|lite)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/;
 
 const options = {
   url: createStringOption({
@@ -47,7 +45,10 @@ export default class ATiktokCommand extends Command {
             selected_variants = variant;
           }
         }
-        if (selected_variants.content_length >= 100 * 1024 * 1024) {
+        if (
+          selected_variants.content_length >= 100 * 1024 * 1024 ||
+          selected_variants.content_length > 25 * 1024 * 1024
+        ) {
           await ctx.editOrReply({
             embeds: [
               new AsepEmbed(
