@@ -1,8 +1,9 @@
 export interface Variants {
-  uri_path: string;
+  href: string;
   content_length: number;
-  file_name?: string;
-  music?: string[];
+  file_extenstion?: string;
+  image_width?: number;
+  image_height?: number;
 }
 
 export type ItemVideo = {
