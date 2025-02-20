@@ -128,4 +128,18 @@ export default class ATiktokCommand extends Command {
       client.logger.error(e);
     }
   }
+  public override async onRunError(context: CommandContext, error: unknown) {
+    context.client.logger.error(error);
+    context.editOrReply({
+      embeds: [
+        new AsepEmbed(
+          {
+            title: "Terjadi kesalahan tidak terduga!",
+            description: "Silakan coba lagi nanti!",
+          },
+          context.client,
+        ).setType("error"),
+      ],
+    });
+  }
 }
