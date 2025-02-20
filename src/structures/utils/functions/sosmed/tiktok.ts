@@ -1,11 +1,10 @@
-import downloadFile from "#asep/structures/utils/functions/downloadFile.js";
 import { Downloader } from "@tobyg74/tiktok-api-dl";
-import { statSync } from "fs";
 import { ItemVideo, Variants } from "#asep/types";
-export const extractTiktok = async () => {
-  return "hai";
+import { validateAndGetContentLength } from "../utils.js";
+export const extractTiktok = async (url: string) => {
+  return scrapperTiktok(url);
 };
-export async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
+async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
   try {
     const fetchAPI = await Downloader(url, { version: "v1" });
     if (!fetchAPI.result || fetchAPI.status === "error") {
@@ -21,15 +20,14 @@ export async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
           result.video?.playAddr[2];
         if (!urlAPI)
           throw new Error("URL API tidak dapat ditemukan tolong periksa lagi!");
-        const fileName = `tiktok-${Math.round(Math.random() * 1000)}-temp.mp4`;
-        const filePath = await downloadFile(urlAPI, fileName);
-        const size = statSync(filePath).size;
+
+        const video_info = await validateAndGetContentLength(urlAPI);
         variants.push({
-          uri_path: filePath,
-          content_length: size,
-          file_name: fileName,
-          music: result?.music.playUrl,
+          href: urlAPI,
+          content_length: video_info.content_length,
+          file_extenstion: video_info.file_extension,
         });
+
         return [{ type: "video", variants: variants }];
       }
       case "image": {
@@ -37,35 +35,31 @@ export async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
           throw new Error("Terjadi kesalahan dalam mendownload gambar!");
         const resultImages = [];
         for (const image of result.images) {
-          const fileName = `tiktok-${Math.round(Math.random() * 1000)}-temp.jpg`;
-          const filePath = await downloadFile(image, fileName);
-          const size = statSync(filePath).size;
+          const image_info = await validateAndGetContentLength(image);
           const item: ItemVideo = {
             type: "image",
             variants: [
               {
-                uri_path: filePath,
-                content_length: size,
-                file_name: fileName,
+                href: image,
+                content_length: image_info.content_length,
+                file_extenstion: image_info.file_extension,
+                image_width: image_info.image_width,
+                image_height: image_info.image_height,
               },
             ],
           };
           resultImages.push(item);
         }
-        const fileName = `audio-${Math.floor(Math.random() * 1000)}.mp3`;
-        const audioPath = await downloadFile(
+        const audio_info = await validateAndGetContentLength(
           result?.music?.playUrl[0],
-          fileName,
         );
-        const size = statSync(audioPath).size;
         const item: ItemVideo = {
           type: "audio",
           variants: [
             {
-              uri_path: audioPath,
-              content_length: size,
-              music: result?.music.playUrl,
-              file_name: fileName,
+              href: result?.music?.playUrl[0],
+              content_length: audio_info.content_length,
+              file_extenstion: audio_info.file_extension,
             },
           ],
         };
