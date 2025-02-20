@@ -1,5 +1,5 @@
 import { IAutorespon } from "#asep/structures/utils/interfeces/IAutorespon.js";
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const AutoresponSchema = new Schema<IAutorespon>(
   {
@@ -23,9 +23,7 @@ const AutoresponSchema = new Schema<IAutorespon>(
   { timestamps: true },
 );
 
-const AutoresponModel = model<IAutorespon>(
-  "autorespon",
-  AutoresponSchema,
-  "Autorespon",
-);
+const AutoresponModel =
+  mongoose.models.Autorespon ||
+  model<IAutorespon>("Autorespon", AutoresponSchema, "autorespon");
 export default AutoresponModel;

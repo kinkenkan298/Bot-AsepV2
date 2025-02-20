@@ -11,7 +11,7 @@ export async function AutoresponListener(
 
   try {
     const fetchData = await AutoresponModel.findOne({ guildId });
-    const findChannel = await ChatAIModel.findOne({ guildId })
+    const findChannel = await ChatAIModel.findOne({ guildId });
     if (!fetchData || !findChannel || findChannel.channels.length === 0) return;
     for (const ChatChannel of findChannel.channels) {
       if (ChatChannel.channelId !== channelId) {
