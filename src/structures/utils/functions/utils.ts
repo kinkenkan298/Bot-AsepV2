@@ -1,4 +1,3 @@
-import { head } from "node_modules/axios/index.cjs";
 import { AnyContext } from "seyfert";
 
 export const sliceText = (text: string, max: number = 100) =>
@@ -101,7 +100,6 @@ export const validateAndGetContentLength = async (url: string) => {
 };
 const getContentLength = (head: Headers) => {
   let headers_value = head.get("content-length");
-  console.log(headers_value);
   if (headers_value != null) {
     return Number.parseInt(headers_value);
   }

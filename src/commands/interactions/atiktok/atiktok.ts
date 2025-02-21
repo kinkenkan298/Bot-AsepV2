@@ -1,5 +1,10 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { TiktokURLregex } from "#asep/structures/utils/data/Constants.js";
+import {
+  extractTiktok,
+  sendSingleVideo,
+} from "#asep/structures/utils/functions/index.js";
+import { ItemVideo } from "#asep/structures/utils/types/index.js";
 import { existsSync, unlinkSync } from "fs";
 import ms from "ms";
 import {
@@ -33,6 +38,12 @@ export default class ATiktokCommand extends Command {
     const { client, options, interaction } = ctx;
     const { url } = options;
     await ctx.deferReply();
+    let items: Array<ItemVideo>;
+    items = await extractTiktok(url.toString());
+    if (!items[0]) throw new Error("Error tidak ketahui!");
+    if (items.length === 1 && items[0].type === "video") {
+      await sendSingleVideo(items[0], ctx);
+    }
   }
   public override async onRunError(context: CommandContext, error: unknown) {
     context.client.logger.error(error);
