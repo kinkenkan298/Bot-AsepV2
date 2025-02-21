@@ -12,6 +12,6 @@ export type ItemVideo = {
 };
 
 export type Task = {
-  type: "Tiktok" | "Youtube" | "Instagram";
+  type: "Tiktok";
   href: string;
 };

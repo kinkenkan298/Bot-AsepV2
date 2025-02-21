@@ -5,8 +5,6 @@ import {
   sendSingleVideo,
 } from "#asep/structures/utils/functions/index.js";
 import { ItemVideo } from "#asep/structures/utils/types/index.js";
-import { existsSync, unlinkSync } from "fs";
-import ms from "ms";
 import {
   Command,
   CommandContext,
@@ -14,7 +12,6 @@ import {
   Declare,
   OKFunction,
   Options,
-  AttachmentBuilder,
 } from "seyfert";
 
 const options = {
@@ -35,14 +32,14 @@ const options = {
 @Options(options)
 export default class ATiktokCommand extends Command {
   public override async run(ctx: CommandContext<typeof options>) {
-    const { client, options, interaction } = ctx;
+    const { options, client } = ctx;
     const { url } = options;
     await ctx.deferReply();
     let items: Array<ItemVideo>;
     items = await extractTiktok(url.toString());
     if (!items[0]) throw new Error("Error tidak ketahui!");
     if (items.length === 1 && items[0].type === "video") {
-      await sendSingleVideo(items[0], ctx);
+      await sendSingleVideo(items[0], client, ctx);
     }
   }
   public override async onRunError(context: CommandContext, error: unknown) {

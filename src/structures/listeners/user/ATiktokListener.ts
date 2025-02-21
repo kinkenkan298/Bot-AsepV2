@@ -1,53 +1,45 @@
-import type { Task } from "#asep/structures/utils/types/index.js";
+import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
+import {
+  getContent,
+  SearchForTask,
+} from "#asep/structures/utils/functions/utils.js";
+import type { ItemVideo } from "#asep/structures/utils/types/index.js";
 import { Message, UsingClient } from "seyfert";
 
 export const ATiktokListener = async (
   message: Message,
   client: UsingClient,
 ) => {
-  const { content } = message;
-  const msg = content.toLowerCase();
+  const { content, channelId, id } = message;
 
-  const task = SearchForTask(msg);
+  const task = SearchForTask(content);
   if (task === null) return;
-
-  message.reply({
-    content: "ini link tiktok",
+  const status_message = await client.messages.write(channelId, {
+    content: `⏳ Analisis konten dari link ${task.type} ....`,
+    allowed_mentions: {
+      replied_user: false,
+    },
+    message_reference: {
+      message_id: id,
+      fail_if_not_exists: false,
+    },
   });
-};
 
-const getContent = (task: Task) => {
-  switch (task.type) {
-    case "Tiktok": {
-      console.log("tiktok");
-      break;
-    }
-    case "Youtube": {
-      console.log("ig");
-      break;
-    }
-    case "Instagram": {
-      console.log("ha");
-      break;
-    }
+  let items: Array<ItemVideo>;
+  try {
+    items = await getContent(task);
+  } catch (e: any) {
+    client.logger.error(e);
+    return;
   }
-};
+  if (!items[0]) throw new Error("Tidak ada item");
 
-const SearchForTask = (text: string): Task | null => {
-  const hrefs = text.match(/(?:https:\/\/|http:\/\/)\S+/gm);
-  if (hrefs === null) return null;
-  const urls = new Array<URL>();
-  for (const el of hrefs) {
-    urls.push(new URL(el));
-  }
+  await sendSingleVideo(items[0], client, status_message);
 
-  for (const url of urls) {
-    if (url.hostname.endsWith("tiktok.com")) {
-      return {
-        href: url.href,
-        type: "Tiktok",
-      };
-    }
-  }
-  return null;
+  const updateStatus = async (text: string) => {
+    await client.messages.edit(status_message.id, status_message.channelId, {
+      content: text,
+      allowed_mentions: { replied_user: false },
+    });
+  };
 };

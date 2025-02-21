@@ -1,8 +1,7 @@
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { join } from "path";
-
-const __dirname = import.meta.dirname;
+import { fileURLToPath } from "url";
 
 export default async function downloadFile(
   url: string,
@@ -10,9 +9,9 @@ export default async function downloadFile(
   paths?: string,
 ): Promise<string> {
   try {
-    const PathToDir = paths ? paths : `${__dirname}../../../../../temp/`;
+    const PathToDir = paths ? paths : `${process.cwd()}/temp/`;
     if (!existsSync(PathToDir)) {
-      mkdirSync(PathToDir, { recursive: true });
+      mkdirSync(PathToDir);
     }
     const filePath = join(PathToDir, filename);
     const config: AxiosRequestConfig = {

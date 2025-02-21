@@ -1,4 +1,6 @@
 import { AnyContext } from "seyfert";
+import { Task } from "../types/index.js";
+import { extractTiktok } from "./scrappers/tiktok.js";
 
 export const sliceText = (text: string, max: number = 100) =>
   text.length > max ? `${text.slice(0, max)}...` : max;
@@ -108,4 +110,29 @@ const getContentLength = (head: Headers) => {
     return Number.parseInt(headers_value);
   }
   return undefined;
+};
+export const getContent = async (task: Task) => {
+  switch (task.type) {
+    case "Tiktok": {
+      return await extractTiktok(task.href);
+    }
+  }
+};
+
+export const SearchForTask = (text: string): Task | null => {
+  const hrefs = text.match(/(?:https:\/\/|http:\/\/)\S+/gm);
+  if (hrefs == null) return null;
+  const urls: URL[] = [];
+  for (const el of hrefs) {
+    urls.push(new URL(el));
+  }
+  for (const url of urls) {
+    if (url.hostname.endsWith("tiktok.com")) {
+      return {
+        href: url.href,
+        type: "Tiktok",
+      };
+    }
+  }
+  return null;
 };

@@ -1,5 +1,5 @@
 import { Downloader } from "@tobyg74/tiktok-api-dl";
-import { ItemVideo, Variants } from "#asep/types";
+import type { ItemVideo, Variants } from "#asep/types";
 import { validateAndGetContentLength } from "../utils.js";
 export const extractTiktok = async (url: string) => {
   return scrapperTiktok(url);
