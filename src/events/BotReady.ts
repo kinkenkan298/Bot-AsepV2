@@ -9,6 +9,7 @@ export default createEvent({
     client.readyTimestamp = Date.now();
     try {
       await mongoose.connect(process.env.MONGODB_URI!, {
+        serverSelectionTimeoutMS: 0,
         serverApi: {
           version: "1",
           strict: true,

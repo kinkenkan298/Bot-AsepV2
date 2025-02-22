@@ -1,3 +1,4 @@
+import { sendSlideShow } from "#asep/structures/utils/functions/client/sendSlideShow.js";
 import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
 import {
   getContent,
@@ -34,7 +35,11 @@ export const ATiktokListener = async (
   }
   if (!items[0]) throw new Error("Tidak ada item");
 
-  await sendSingleVideo(items[0], client, status_message);
+  if (items.find((fd) => fd.type === "audio")) {
+    await sendSlideShow(items, client, status_message);
+  } else if (items.length === 1 && items[0].type === "video") {
+    await sendSingleVideo(items[0], client, status_message);
+  }
 
   const updateStatus = async (text: string) => {
     await client.messages.edit(status_message.id, status_message.channelId, {
