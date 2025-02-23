@@ -13,6 +13,14 @@ export const ATiktokListener = async (
 ) => {
   const { content, channelId, id } = message;
 
+  const prefix: Set<string> = new Set([
+    ...client.config.prefixes,
+    ...client.config.defaultPrefix,
+  ]);
+  for (const [pref1, pref2] of prefix.entries()) {
+    if (content.includes(pref1) || content.includes(pref2)) return;
+  }
+
   const task = SearchForTask(content);
   if (task === null) return;
   const status_message = await client.messages.write(channelId, {
