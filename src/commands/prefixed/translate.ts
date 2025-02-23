@@ -1,4 +1,3 @@
-import { Configuration } from "#asep/data/Configuration.js";
 import { GoogleLocalesText } from "#asep/data/Constants.js";
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { splitTextByAmount } from "#asep/utils/functions/utils.js";
@@ -8,7 +7,6 @@ import {
   CommandContext,
   createStringOption,
   Declare,
-  Embed,
   Formatter,
   IgnoreCommand,
   Options,
