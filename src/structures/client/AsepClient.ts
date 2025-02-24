@@ -76,12 +76,14 @@ export class AsepClient extends Client<true> {
       cache: {
         disabledCache: {
           bans: true,
-          emojis: true,
           stickers: true,
         },
       },
       handleCommand: class extends HandleCommand {
         override argsParser = Yuna.parser({
+          useRepliedUserAsAnOption: {
+            requirePing: true,
+          },
           logResult: true,
           syntax: {
             namedOptions: ["-", "--"],

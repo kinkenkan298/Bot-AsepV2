@@ -11,6 +11,7 @@ import {
   CommandContext,
   createStringOption,
   Declare,
+  IgnoreCommand,
   OKFunction,
   Options,
 } from "seyfert";
@@ -30,6 +31,7 @@ const options = {
   name: "atiktok",
   description: "Kirim video tiktokmu",
   aliases: ["tt"],
+  ignore: IgnoreCommand.Message,
 })
 @Options(options)
 export default class ATiktokCommand extends Command {
