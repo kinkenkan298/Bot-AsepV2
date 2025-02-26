@@ -11,12 +11,10 @@ import {
   IgnoreCommand,
   Options,
 } from "seyfert";
+import { MessageFlags } from "seyfert/lib/types/index.js";
 
 const options = {
   to: createStringOption({
-    description: "mau di translate ke bahasa apa",
-  }),
-  from: createStringOption({
     description: "mau di translate ke bahasa apa",
   }),
 };
@@ -43,6 +41,7 @@ export default class TranslateCommand extends Command {
     if (!msg) {
       await ctx.editOrReply({
         content: "Text tidak ada bang!",
+        flags: MessageFlags.Ephemeral,
       });
       return;
     }
