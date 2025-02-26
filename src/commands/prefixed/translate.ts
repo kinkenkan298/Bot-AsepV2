@@ -31,8 +31,8 @@ const options = {
 @Options(options)
 export default class TranslateCommand extends Command {
   public override async run(ctx: CommandContext<typeof options>) {
-    const { to } = ctx.options;
-    let tujuanBahasa = getCode(to || "en");
+    const { to = "en" } = ctx.options;
+    let tujuanBahasa = getCode(to);
     if (!tujuanBahasa) {
       await ctx.editOrReply({
         content: "Tolong masukan bahasa yang ada !",
