@@ -42,7 +42,7 @@ export const BOT_ACTIVITIES: GatewayActivityUpdateData[] = [
 export const TiktokURLregex =
   /https:\/\/(?:m|www|vm|vt|lite)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/;
 export const InstaURLRegex =
-  /((?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:p|reel)\/([^/?#&]+)).*/g;
+  /(?:https?:\/\/)?(?:www\.|m\.)?instagram\.com(?:\/.*)?/i;
 export const SemuaPesan = {
   events: {
     invalidOptions: ({ options, list }: TOptions) =>

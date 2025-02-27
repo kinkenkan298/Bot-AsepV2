@@ -37,6 +37,7 @@ export default class AInstaCommand extends Command {
     const { url } = options;
 
     const data = await extractInstagram(url.toString());
+    console.log(data);
 
     await ctx.editOrReply({
       content: `Link: ${url}`,

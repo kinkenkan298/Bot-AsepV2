@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Variants } from "../../types/index.js";
+import { ItemVideo, Variants } from "../../types/index.js";
 import { validateAndGetContentLength } from "../utils.js";
 
 const FIXED_TIMESTAMP = 1739185749634;
@@ -26,8 +26,7 @@ export const extractInstagram = (url: string) => {
   return scrapperInstagram(url);
 };
 
-const scrapperInstagram = async (url: string) => {
-  const variants: Variants[] = [];
+const scrapperInstagram = async (url: string): Promise<Array<ItemVideo>> => {
   const signature = await getSignature(url);
 
   const req = await axios({
@@ -39,20 +38,41 @@ const scrapperInstagram = async (url: string) => {
   if (req.status !== 200 || req.statusText !== "OK")
     throw new Error("Gagal dalam scrape data instagram !");
 
-  const { url: urlAPI, meta } = req.data;
-  console.log(urlAPI);
-  for (const urlMedia of urlAPI) {
-    if (
-      urlMedia.type === "jpg" ||
-      urlMedia.type === "jpeg" ||
-      urlMedia.type === "png"
-    ) {
-      const image_info = await validateAndGetContentLength(urlMedia.url);
+  const data = req.data;
+  if (Array.isArray(data)) {
+    const result = [];
+    for (const urlMedia of data) {
+      for (const urla of urlMedia.url) {
+        const imageInfo = await validateAndGetContentLength(urla.url);
+        const item: ItemVideo = {
+          type: "image",
+          variants: [
+            {
+              href: urla.url,
+              content_length: imageInfo.content_length,
+            },
+          ],
+        };
+        result.push(item);
+      }
+    }
+    return result;
+  } else {
+    const variants: Variants[] = [];
+    for (const urlv of data.url) {
+      const videoInfo = await validateAndGetContentLength(urlv.url);
       variants.push({
-        href: urlMedia.url,
-        content_length: image_info.content_length,
+        href: urlv.url,
+        content_length: videoInfo.content_length,
       });
     }
+
+    return [
+      {
+        type: "video",
+        variants: variants,
+      },
+    ];
   }
 };
 
