@@ -13,8 +13,10 @@ import {
   Declare,
   IgnoreCommand,
   OKFunction,
+  OnOptionsReturnObject,
   Options,
 } from "seyfert";
+import { MessageFlags } from "seyfert/lib/types/index.js";
 
 const options = {
   url: createStringOption({
@@ -60,6 +62,26 @@ export default class ATiktokCommand extends Command {
           context.client,
         ).setType("error"),
       ],
+    });
+  }
+  public override async onOptionsError(
+    ctx: CommandContext,
+    metadata: OnOptionsReturnObject,
+  ) {
+    const msg = Object.entries(metadata)
+      .filter((_) => _[1].failed)
+      .map((e) => `${e[1].value}`);
+    await ctx.editOrReply({
+      embeds: [
+        new AsepEmbed(
+          {
+            title: "Terjadi kesalahan pada opsi yang diterima!!",
+            description: `**${msg[0]}**`,
+          },
+          ctx.client,
+        ).setType("error"),
+      ],
+      flags: MessageFlags.Ephemeral,
     });
   }
 }
