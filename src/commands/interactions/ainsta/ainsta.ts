@@ -1,5 +1,6 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { InstaURLRegex } from "#asep/structures/utils/data/Constants.js";
+import { extractInstagram } from "#asep/structures/utils/functions/scrappers/instagram.js";
 import {
   Command,
   CommandContext,
@@ -34,6 +35,9 @@ export default class AInstaCommand extends Command {
     await ctx.deferReply();
     const { client, options } = ctx;
     const { url } = options;
+
+    const data = await extractInstagram(url.toString());
+
     await ctx.editOrReply({
       content: `Link: ${url}`,
     });
