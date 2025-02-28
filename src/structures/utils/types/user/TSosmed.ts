@@ -12,6 +12,6 @@ export type ItemMedia = {
 };
 
 export type Task = {
-  type: "Tiktok" | "Instagram" | "Twitter" | "Youtube";
+  type: "Tiktok" | "Instagram";
   href: string;
 };
