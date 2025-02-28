@@ -5,14 +5,13 @@ import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
 import { extractInstagram } from "#asep/structures/utils/functions/scrappers/instagram.js";
 import { ItemMedia } from "#asep/structures/utils/types/index.js";
 import {
-  Command,
   CommandContext,
   createStringOption,
   Declare,
-  IgnoreCommand,
   OKFunction,
   OnOptionsReturnObject,
   Options,
+  SubCommand,
 } from "seyfert";
 import { MessageFlags } from "seyfert/lib/types/index.js";
 
@@ -30,10 +29,9 @@ const options = {
 @Declare({
   name: "ainsta",
   description: "Bagikan atau kirim video instagram mu di dc!!",
-  ignore: IgnoreCommand.Message,
 })
 @Options(options)
-export default class AInstaCommand extends Command {
+export class AInstaCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
     const { client, options } = ctx;

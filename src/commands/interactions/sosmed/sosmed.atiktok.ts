@@ -7,14 +7,13 @@ import {
 } from "#asep/structures/utils/functions/index.js";
 import { ItemMedia } from "#asep/structures/utils/types/index.js";
 import {
-  Command,
   CommandContext,
   createStringOption,
   Declare,
-  IgnoreCommand,
   OKFunction,
   OnOptionsReturnObject,
   Options,
+  SubCommand,
 } from "seyfert";
 import { MessageFlags } from "seyfert/lib/types/index.js";
 
@@ -32,11 +31,9 @@ const options = {
 @Declare({
   name: "atiktok",
   description: "Kirim video tiktokmu",
-  aliases: ["tt"],
-  ignore: IgnoreCommand.Message,
 })
 @Options(options)
-export default class ATiktokCommand extends Command {
+export class ATiktokCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     const { options, client } = ctx;
     const { url } = options;
