@@ -1,5 +1,5 @@
 import {
-  ATiktokListener,
+  ASosmedListener,
   AutoresponListener,
   ChatAIListerner,
 } from "#asep/listeners";
@@ -10,7 +10,7 @@ export default createEvent({
   async run(message, client) {
     if (message.author.bot) return;
 
-    await ATiktokListener(message, client);
+    await ASosmedListener(message, client);
     await AutoresponListener(client, message);
     await ChatAIListerner(client, message);
   },

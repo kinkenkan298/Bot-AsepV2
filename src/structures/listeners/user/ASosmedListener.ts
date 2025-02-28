@@ -7,7 +7,7 @@ import {
 import type { ItemVideo } from "#asep/structures/utils/types/index.js";
 import { Message, UsingClient } from "seyfert";
 
-export const ATiktokListener = async (
+export const ASosmedListener = async (
   message: Message,
   client: UsingClient,
 ) => {
