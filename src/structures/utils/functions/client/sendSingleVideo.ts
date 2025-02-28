@@ -1,12 +1,12 @@
 import { CommandContext, Message, UsingClient } from "seyfert";
-import { ItemVideo } from "../../types/index.js";
+import type { ItemMedia } from "../../types/index.js";
 import { AsepEmbed } from "../../classes/AsepEmbed.js";
 import downloadFile from "../downloadFile.js";
 import { AttachmentBuilder } from "seyfert";
 import { existsSync, unlinkSync } from "fs";
 
 export const sendSingleVideo = async (
-  item: ItemVideo,
+  item: ItemMedia,
   client: UsingClient,
   context: CommandContext | Message,
 ) => {
@@ -50,11 +50,11 @@ export const sendSingleVideo = async (
       });
     }
     const fileName: string = `tiktokVideo-temp${Math.floor(Math.random() * 1000)}.mp4`;
-    const downloadTikok = await downloadFile(selected_variants.href, fileName);
+    const downloadVideo = await downloadFile(selected_variants.href, fileName);
     try {
       const attachVideo = new AttachmentBuilder()
         .setName(fileName)
-        .setFile("path", downloadTikok);
+        .setFile("path", downloadVideo);
 
       isFromInteraction
         ? await context.editOrReply({
@@ -84,7 +84,7 @@ export const sendSingleVideo = async (
             allowed_mentions: { replied_user: false },
           });
     } finally {
-      if (existsSync(downloadTikok)) unlinkSync(downloadTikok);
+      if (existsSync(downloadVideo)) unlinkSync(downloadVideo);
     }
   }
 };

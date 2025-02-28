@@ -11,5 +11,5 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "exec": "tsx watch ./src/index.ts --dev --debug"
+  "exec": "tsx ./src/index.ts --dev --debug"
 }

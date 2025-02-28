@@ -5,7 +5,7 @@ import {
   extractTiktok,
   sendSingleVideo,
 } from "#asep/structures/utils/functions/index.js";
-import { ItemVideo } from "#asep/structures/utils/types/index.js";
+import { ItemMedia } from "#asep/structures/utils/types/index.js";
 import {
   Command,
   CommandContext,
@@ -41,7 +41,7 @@ export default class ATiktokCommand extends Command {
     const { options, client } = ctx;
     const { url } = options;
     await ctx.deferReply();
-    let items: Array<ItemVideo>;
+    let items: Array<ItemMedia>;
     items = await extractTiktok(url.toString());
     if (!items[0]) throw new Error("Error tidak ketahui!");
     if (items.length === 1 && items[0].type === "video") {
