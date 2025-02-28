@@ -29,7 +29,7 @@ const options = {
   },
 })
 @Options(options)
-export class RoleCommand extends SubCommand {
+export default class RoleCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
 

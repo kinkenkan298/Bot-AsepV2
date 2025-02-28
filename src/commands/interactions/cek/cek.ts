@@ -1,10 +1,8 @@
-import { Command, Declare, Options } from "seyfert";
-import { RoleCommand } from "./role.cek.js";
-import { PerintahCommand } from "./perintah.cek.js";
+import { AutoLoad, Command, Declare } from "seyfert";
 
 @Declare({
   name: "cek",
   description: "Cek Sesuatu disini",
 })
-@Options([RoleCommand, PerintahCommand])
+@AutoLoad()
 export default class CekCommand extends Command {}

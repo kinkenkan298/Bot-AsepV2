@@ -1,11 +1,9 @@
-import { Command, Declare, IgnoreCommand, Options } from "seyfert";
-import { ATiktokCommand } from "./sosmed.atiktok.js";
-import { AInstaCommand } from "./sosmed.ainsta.js";
+import { AutoLoad, Command, Declare, IgnoreCommand } from "seyfert";
 
 @Declare({
   name: "sosmed",
   description: "Bagikan media sosial mu ke discord!",
   ignore: IgnoreCommand.Message,
 })
-@Options([ATiktokCommand, AInstaCommand])
+@AutoLoad()
 export default class ASosmed extends Command {}

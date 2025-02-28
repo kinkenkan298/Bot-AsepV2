@@ -1,6 +1,4 @@
-import { Command, Declare, IgnoreCommand, Options } from "seyfert";
-import { ReactRoleAdd } from "./react-add.js";
-import { ReactRoleDelete } from "./react-delete.js";
+import { AutoLoad, Command, Declare, IgnoreCommand } from "seyfert";
 
 @Declare({
   name: "reactrole",
@@ -8,5 +6,5 @@ import { ReactRoleDelete } from "./react-delete.js";
   ignore: IgnoreCommand.Message,
   defaultMemberPermissions: ["ManageRoles"],
 })
-@Options([ReactRoleAdd, ReactRoleDelete])
+@AutoLoad()
 export default class ReactRole extends Command {}

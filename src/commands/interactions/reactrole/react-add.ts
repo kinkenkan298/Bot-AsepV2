@@ -29,7 +29,7 @@ const options = {
   description: "tambah reaction emoji pada pesan!",
 })
 @Options(options)
-export class ReactRoleAdd extends SubCommand {
+export default class ReactRoleAdd extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
 

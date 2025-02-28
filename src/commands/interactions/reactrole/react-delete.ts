@@ -20,10 +20,10 @@ const options = {
   description: "Hapus reactions role pada pesan!",
 })
 @Options(options)
-export class ReactRoleDelete extends SubCommand {
+export default class ReactRoleDelete extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
-    const { client, options, guildId, channelId, interaction } = ctx;
+    const { client, options, guildId, channelId } = ctx;
     const { messageid } = options;
     try {
       const data = await ReactRoleModel.findOne({

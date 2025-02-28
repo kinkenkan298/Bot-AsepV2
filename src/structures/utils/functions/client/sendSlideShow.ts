@@ -17,7 +17,7 @@ export const sendSlideShow = async (
   const isFromInteraction = context instanceof CommandContext;
   if (!isFromInteraction) {
     await client.messages.edit(context.id, context.channelId, {
-      content: "⏳ Sedang Memprosess konten ...",
+      content: "⏳ Sedang Memprosess konten slide show...",
       allowed_mentions: { replied_user: false },
     });
     if (!context.referencedMessage) throw new Error("tidak tahu");
@@ -29,7 +29,7 @@ export const sendSlideShow = async (
           flags: MessageFlags.SuppressEmbeds,
         },
       );
-    } catch (e) {}
+    } catch {}
   }
   const batchFile = 10;
   const tempPath: string[] = [];

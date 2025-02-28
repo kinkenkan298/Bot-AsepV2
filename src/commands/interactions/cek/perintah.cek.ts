@@ -15,7 +15,7 @@ import { type CommandContext, Declare, Formatter, SubCommand } from "seyfert";
     default: 2,
   },
 })
-export class PerintahCommand extends SubCommand {
+export default class PerintahCommand extends SubCommand {
   public override async run(ctx: CommandContext) {
     await ctx.deferReply();
     const embed = new AsepEmbed(

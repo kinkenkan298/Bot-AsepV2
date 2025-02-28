@@ -31,7 +31,7 @@ const options = {
   description: "Bagikan atau kirim video instagram mu di dc!!",
 })
 @Options(options)
-export class AInstaCommand extends SubCommand {
+export default class AInstaCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
     const { client, options } = ctx;

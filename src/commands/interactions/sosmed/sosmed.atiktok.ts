@@ -33,7 +33,7 @@ const options = {
   description: "Kirim video tiktokmu",
 })
 @Options(options)
-export class ATiktokCommand extends SubCommand {
+export default class ATiktokCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     const { options, client } = ctx;
     const { url } = options;
