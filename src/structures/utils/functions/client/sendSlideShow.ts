@@ -1,4 +1,4 @@
-import { ItemVideo } from "../../types/index.js";
+import type { ItemMedia } from "../../types/index.js";
 import {
   AttachmentBuilder,
   CommandContext,
@@ -10,7 +10,7 @@ import { existsSync, unlinkSync } from "fs";
 import { MessageFlags } from "seyfert/lib/types/index.js";
 
 export const sendSlideShow = async (
-  items: ItemVideo[],
+  items: ItemMedia[],
   client: UsingClient,
   context: CommandContext | Message,
 ) => {
@@ -60,7 +60,7 @@ export const sendSlideShow = async (
     } else {
       if (nu == 0) {
         await client.messages.edit(context.id, context.channelId, {
-          content: "✅ berhasil upload!",
+          content: "✅ Berhasil upload!",
           files: image_path,
           allowed_mentions: { replied_user: false },
         });

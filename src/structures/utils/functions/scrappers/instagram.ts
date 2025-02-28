@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ItemVideo, Variants } from "../../types/index.js";
+import { ItemMedia, Variants } from "../../types/index.js";
 import { validateAndGetContentLength } from "../utils.js";
 
 const FIXED_TIMESTAMP = 1739185749634;
@@ -26,7 +26,7 @@ export const extractInstagram = (url: string) => {
   return scrapperInstagram(url);
 };
 
-const scrapperInstagram = async (url: string): Promise<Array<ItemVideo>> => {
+const scrapperInstagram = async (url: string): Promise<Array<ItemMedia>> => {
   const signature = await getSignature(url);
 
   const req = await axios({
@@ -44,7 +44,7 @@ const scrapperInstagram = async (url: string): Promise<Array<ItemVideo>> => {
     for (const urlMedia of data) {
       for (const urla of urlMedia.url) {
         const imageInfo = await validateAndGetContentLength(urla.url);
-        const item: ItemVideo = {
+        const item: ItemMedia = {
           type: "image",
           variants: [
             {

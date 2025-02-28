@@ -1,7 +1,6 @@
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { join } from "path";
-import { fileURLToPath } from "url";
 
 export default async function downloadFile(
   url: string,

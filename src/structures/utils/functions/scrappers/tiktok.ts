@@ -1,10 +1,10 @@
 import { Downloader } from "@tobyg74/tiktok-api-dl";
-import type { ItemVideo, Variants } from "#asep/types";
+import type { ItemMedia, Variants } from "#asep/types";
 import { validateAndGetContentLength } from "../utils.js";
 export const extractTiktok = async (url: string) => {
   return scrapperTiktok(url);
 };
-async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
+async function scrapperTiktok(url: string): Promise<Array<ItemMedia>> {
   try {
     const fetchAPI = await Downloader(url, { version: "v1" });
     if (!fetchAPI.result || fetchAPI.status === "error") {
@@ -36,7 +36,7 @@ async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
         const resultImages = [];
         for (const image of result.images) {
           const image_info = await validateAndGetContentLength(image);
-          const item: ItemVideo = {
+          const item: ItemMedia = {
             type: "image",
             variants: [
               {
@@ -53,7 +53,7 @@ async function scrapperTiktok(url: string): Promise<Array<ItemVideo>> {
         const audio_info = await validateAndGetContentLength(
           result?.music?.playUrl[0],
         );
-        const item: ItemVideo = {
+        const item: ItemMedia = {
           type: "audio",
           variants: [
             {
