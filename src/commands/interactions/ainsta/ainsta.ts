@@ -1,5 +1,7 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { InstaURLRegex } from "#asep/structures/utils/data/Constants.js";
+import { sendSlideShow } from "#asep/structures/utils/functions/client/sendSlideShow.js";
+import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
 import { extractInstagram } from "#asep/structures/utils/functions/scrappers/instagram.js";
 import {
   Command,
@@ -37,11 +39,11 @@ export default class AInstaCommand extends Command {
     const { url } = options;
 
     const data = await extractInstagram(url.toString());
-    console.log(data);
-
-    await ctx.editOrReply({
-      content: `Link: ${url}`,
-    });
+    if (data.length === 1 && data[0].type === "video") {
+      await sendSingleVideo(data[0], client, ctx);
+    } else if (data.length > 1 && data[0].type === "image") {
+      await sendSlideShow(data, client, ctx);
+    }
   }
   public override async onOptionsError(
     ctx: CommandContext,
