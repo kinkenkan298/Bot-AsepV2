@@ -4,7 +4,7 @@ import {
   getContent,
   SearchForTask,
 } from "#asep/structures/utils/functions/utils.js";
-import type { ItemVideo } from "#asep/structures/utils/types/index.js";
+import type { ItemMedia } from "#asep/structures/utils/types/index.js";
 import { Message, UsingClient } from "seyfert";
 
 export const ASosmedListener = async (
@@ -34,7 +34,7 @@ export const ASosmedListener = async (
     },
   });
 
-  let items: Array<ItemVideo>;
+  let items: Array<ItemMedia>;
   try {
     items = await getContent(task);
   } catch (e: any) {

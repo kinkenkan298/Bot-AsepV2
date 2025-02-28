@@ -3,6 +3,7 @@ import { InstaURLRegex } from "#asep/structures/utils/data/Constants.js";
 import { sendSlideShow } from "#asep/structures/utils/functions/client/sendSlideShow.js";
 import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
 import { extractInstagram } from "#asep/structures/utils/functions/scrappers/instagram.js";
+import { ItemMedia } from "#asep/structures/utils/types/index.js";
 import {
   Command,
   CommandContext,
@@ -38,7 +39,7 @@ export default class AInstaCommand extends Command {
     const { client, options } = ctx;
     const { url } = options;
 
-    const data = await extractInstagram(url.toString());
+    const data: Array<ItemMedia> = await extractInstagram(url.toString());
     if (data.length === 1 && data[0].type === "video") {
       await sendSingleVideo(data[0], client, ctx);
     } else if (data.length > 1 && data[0].type === "image") {

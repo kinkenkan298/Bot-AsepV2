@@ -6,12 +6,12 @@ export interface Variants {
   image_height?: number;
 }
 
-export type ItemVideo = {
+export type ItemMedia = {
   type: "video" | "image" | "audio";
   variants: Variants[];
 };
 
 export type Task = {
-  type: "Tiktok";
+  type: "Tiktok" | "Instagram" | "Twitter" | "Youtube";
   href: string;
 };
