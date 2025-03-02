@@ -1,8 +1,8 @@
 import {
   CommandContext,
   createChannelOption,
-  createStringOption,
   Declare,
+  Group,
   Options,
   SubCommand,
 } from "seyfert";
@@ -14,26 +14,21 @@ const options = {
     required: true,
     channel_types: [ChannelType.GuildText],
   }),
-  message: createStringOption({
-    description: "Ubah pesan sesuai keinginan!",
-  }),
 };
 
 @Declare({
-  name: "welcome",
-  description: "Setup welcome channel untuk member yang baru join!",
+  name: "delete",
+  description: "Delete welcome channel !",
 })
 @Options(options)
-export default class SetupWelcomeCommand extends SubCommand {
+@Group("welcome")
+export default class DeleteWelcomeCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
     const { client, options, guildId } = ctx;
-    const {
-      channel: targetChannel,
-      message: customMessage = "Halo {username}, Semoga betah di {server-name}",
-    } = options;
+    const { channel: targetChannel } = options;
     await ctx.editOrReply({
-      content: `channel: ${targetChannel}\npesan: ${customMessage}`,
+      content: `channel: ${targetChannel}`,
     });
   }
 }
