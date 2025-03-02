@@ -51,10 +51,9 @@ export default class SetupWelcomeCommand extends SubCommand {
             new AsepEmbed(
               {
                 title: "Beehasil simpan welcome channel didatabase!",
-                tipe_color: "success",
               },
               client,
-            ),
+            ).setType("success"),
           ],
         });
       } catch (e) {
@@ -65,10 +64,9 @@ export default class SetupWelcomeCommand extends SubCommand {
               {
                 title: "Terjadi kesalahan dalam save data kedatabase!",
                 description: "Tolong coba lagi beberapa saat kemudan!",
-                tipe_color: "error",
               },
               client,
-            ),
+            ).setType("error"),
           ],
         });
       }
@@ -81,10 +79,9 @@ export default class SetupWelcomeCommand extends SubCommand {
           new AsepEmbed(
             {
               title: "Channel yang ada masukan sudah ada didalam database!",
-              tipe_color: "error",
             },
             client,
-          ),
+          ).setType("error"),
         ],
       });
     }
@@ -100,10 +97,9 @@ export default class SetupWelcomeCommand extends SubCommand {
             new AsepEmbed(
               {
                 title: "Beehasil update welcome channel didatabase!",
-                tipe_color: "success",
               },
               client,
-            ),
+            ).setType("success"),
           ],
         });
       } catch (e) {
@@ -114,10 +110,9 @@ export default class SetupWelcomeCommand extends SubCommand {
               {
                 title: "Terjadi kesalahan dalam update data ke database!!",
                 description: "Tolong coba lagi beberapa saat!",
-                tipe_color: "error",
               },
               client,
-            ),
+            ).setType("error"),
           ],
         });
       }
