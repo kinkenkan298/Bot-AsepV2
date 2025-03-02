@@ -9,7 +9,10 @@ import { AutoLoad, Command, Declare, Groups, IgnoreCommand } from "seyfert";
 @AutoLoad()
 @Groups({
   welcome: {
-    defaultDescription: "set up channel for welcome and out member",
+    defaultDescription: "set up channel for welcome member!",
+  },
+  leave: {
+    defaultDescription: "set up channel for leave member!",
   },
 })
 export default class SetupChanmel extends Command {}
