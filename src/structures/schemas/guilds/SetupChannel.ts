@@ -17,9 +17,9 @@ const setupChannelSchema = new Schema<IWelcome>({
 });
 
 const SetupChannelModel = model(
-  "SetupChannel",
-  setupChannelSchema,
   "setupchannel",
+  setupChannelSchema,
+  "SetupChannel",
 );
 
 export default SetupChannelModel;

@@ -8,6 +8,8 @@ import {
   SubCommand,
 } from "seyfert";
 import { ChannelType } from "seyfert/lib/types/index.js";
+import SetupChannelModel from "#asep/structures/schemas/guilds/SetupChannel.js";
+import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 
 const options = {
   channel: createChannelOption({
@@ -30,12 +32,95 @@ export default class SetupWelcomeCommand extends SubCommand {
   public override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply();
     const { client, options, guildId } = ctx;
-    const {
-      channel: targetChannel,
-      message: customMessage = "Halo {username}, Semoga betah di {server-name}",
-    } = options;
-    await ctx.editOrReply({
-      content: `channel: ${targetChannel}\npesan: ${customMessage}`,
-    });
+    const { channel: targetChannel, message: customMessage } = options;
+
+    const data = await SetupChannelModel.findOne({ guildId });
+
+    if (!data) {
+      const newData = new SetupChannelModel({
+        guildId,
+        channelId: targetChannel.id,
+        customMessage: customMessage
+          ? customMessage
+          : "Halo {username}, Semoga betah diserver {server-name}",
+      });
+      try {
+        await newData.save();
+        await ctx.editOrReply({
+          embeds: [
+            new AsepEmbed(
+              {
+                title: "Beehasil simpan welcome channel didatabase!",
+                tipe_color: "success",
+              },
+              client,
+            ),
+          ],
+        });
+      } catch (e) {
+        client.logger.error(e);
+        await ctx.editOrReply({
+          embeds: [
+            new AsepEmbed(
+              {
+                title: "Terjadi kesalahan dalam save data kedatabase!",
+                description: "Tolong coba lagi beberapa saat kemudan!",
+                tipe_color: "error",
+              },
+              client,
+            ),
+          ],
+        });
+      }
+      return;
+    }
+
+    if (data && data.channelId === targetChannel.id) {
+      await ctx.editOrReply({
+        embeds: [
+          new AsepEmbed(
+            {
+              title: "Channel yang ada masukan sudah ada didalam database!",
+              tipe_color: "error",
+            },
+            client,
+          ),
+        ],
+      });
+    }
+
+    if (data.channelId !== targetChannel.id) {
+      try {
+        const cMessage = customMessage ? customMessage : data.customMessage;
+        data.channelId = targetChannel.id;
+        data.customMessage = cMessage;
+        data.save();
+        await ctx.editOrReply({
+          embeds: [
+            new AsepEmbed(
+              {
+                title: "Beehasil update welcome channel didatabase!",
+                tipe_color: "success",
+              },
+              client,
+            ),
+          ],
+        });
+      } catch (e) {
+        client.logger.error(e);
+        await ctx.editOrReply({
+          embeds: [
+            new AsepEmbed(
+              {
+                title: "Terjadi kesalahan dalam update data ke database!!",
+                description: "Tolong coba lagi beberapa saat!",
+                tipe_color: "error",
+              },
+              client,
+            ),
+          ],
+        });
+      }
+    }
   }
 }

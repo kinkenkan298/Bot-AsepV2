@@ -5,9 +5,14 @@ import { APIEmbed } from "seyfert/lib/types/index.js";
 
 type TypeEmbed = "info" | "success" | "error" | "extra" | "warn";
 
+interface AsepAPIEmbed extends APIEmbed {
+  tipe_color: TypeEmbed;
+}
+
 export class AsepEmbed extends Embed {
   private client!: UsingClient;
-  constructor(data: Partial<APIEmbed> = {}, client: UsingClient) {
+  tipe_color: TypeEmbed = "info";
+  constructor(data: Partial<AsepAPIEmbed> = {}, client: UsingClient) {
     super(data);
     this.client = client;
     this.data = {
@@ -21,12 +26,14 @@ export class AsepEmbed extends Embed {
       },
       color: Configuration.colors.info,
       timestamp: new Date(Date.now()).toISOString(),
+      tipe_color: this.tipe_color,
       ...data,
     };
     if (!this.data.fields) this.data.fields = [];
   }
   setType(type?: TypeEmbed): this {
-    switch (type) {
+    this.tipe_color = type ? type : "info";
+    switch (this.tipe_color) {
       case "success": {
         this.data.color = Configuration.colors.success;
         break;

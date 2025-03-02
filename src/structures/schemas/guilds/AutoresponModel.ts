@@ -24,6 +24,6 @@ const AutoresponSchema = new Schema<IAutorespon>(
 );
 
 const AutoresponModel =
-  mongoose.models.Autorespon ||
-  model<IAutorespon>("Autorespon", AutoresponSchema, "autorespon");
+  mongoose.models.autorespon ||
+  model<IAutorespon>("autorespon", AutoresponSchema, "AutoRespon");
 export default AutoresponModel;
