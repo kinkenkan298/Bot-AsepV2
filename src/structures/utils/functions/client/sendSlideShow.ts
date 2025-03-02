@@ -3,11 +3,18 @@ import {
   AttachmentBuilder,
   CommandContext,
   Message,
+  RawFile,
   UsingClient,
 } from "seyfert";
 import downloadFile from "../downloadFile.js";
 import { existsSync, unlinkSync } from "fs";
 import { MessageFlags } from "seyfert/lib/types/index.js";
+import {
+  convertToProperCodec,
+  getAudioData,
+  sendVoiceMessage,
+} from "./sendVoiceMessage.js";
+import { writeFile } from "fs/promises";
 
 export const sendSlideShow = async (
   items: ItemMedia[],
@@ -35,21 +42,34 @@ export const sendSlideShow = async (
   const tempPath: string[] = [];
   let nu: number = 0;
 
+  const audio_item = items.find((fd) => fd.type === "audio");
+  if (!audio_item) throw new Error("error guys");
+  if (!audio_item.variants[0]) throw new Error("error gatau");
+
+  const audio = await (await fetch(audio_item.variants[0].href)).arrayBuffer();
+  const now = Date.now();
+  await writeFile(`${process.cwd()}/temp/${now}-audio.mp4`, Buffer.from(audio));
+  const ogg_filename = await convertToProperCodec(
+    `${process.cwd()}/temp/${now}-audio.mp4`,
+  );
+  const { duration, waveform } = await getAudioData(ogg_filename);
+
   for (let i = 0; i < items.length; i += batchFile) {
     const batch = items.slice(i, i + batchFile);
     const image_path: AttachmentBuilder[] = [];
     for (const item of batch) {
       if (!items[0].variants) throw new Error("Error tidak diketahui!");
       let fileName: string;
-      if (item.type === "image") {
-        fileName = `tiktokImage-${Math.floor(Math.random() * 1000)}-temp.jpg`;
-      } else {
-        fileName = `tiktokAudio-${Math.floor(Math.random() * 1000)}-temp.mp3`;
-      }
+      if (item.type !== "image") continue;
+      fileName = `Image${Math.floor(Math.random() * 1000)}-temp.jpg`;
       const downFile = await downloadFile(item.variants[0].href, fileName);
       tempPath.push(downFile);
       image_path.push(
-        new AttachmentBuilder().setName(fileName).setFile("path", downFile),
+        new AttachmentBuilder({
+          filename: fileName,
+          resolvable: downFile,
+          type: "path",
+        }),
       );
     }
 
@@ -73,9 +93,19 @@ export const sendSlideShow = async (
       }
     }
   }
+  tempPath.push(`${process.cwd()}/temp/${now}-audio.mp4`);
+  tempPath.push(ogg_filename);
+
+  const voice_message = await sendVoiceMessage(
+    context.channelId,
+    ogg_filename,
+    duration,
+    waveform,
+  );
+
   setTimeout(() => {
     for (const pth of tempPath) {
       if (existsSync(pth)) unlinkSync(pth);
     }
-  }, 5000);
+  }, 2000);
 };
