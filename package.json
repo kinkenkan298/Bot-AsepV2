@@ -13,7 +13,7 @@
     "google-translate-api-x": "^10.7.2",
     "mongoose": "^8.11.0",
     "ms": "^2.1.3",
-    "seyfert": "^2.2.0",
+    "seyfert": "github:tiramisulabs/seyfert",
     "yunaforseyfert": "^1.1.0"
   },
   "devDependencies": {
