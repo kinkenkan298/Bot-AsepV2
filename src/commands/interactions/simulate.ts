@@ -1,5 +1,6 @@
+import WelcomeChannel from "#asep/structures/utils/classes/canvas/WelcomeChannel.js";
 import {
-  Client,
+  AttachmentBuilder,
   Command,
   CommandContext,
   createUserOption,
@@ -27,10 +28,21 @@ export default class SimulateJoinOut extends Command {
     const { options, client, guildId } = ctx;
     const { user } = options;
 
-    console.log(client.applicationId);
-
+    const canvas = new WelcomeChannel()
+      .setDisplayName(user.globalName || user.username)
+      .setMessage("halo")
+      .setType("welcome")
+      .setAvatar(user.avatarURL({ extension: "png" }));
+    const img = await canvas.build({ format: "png" });
     await ctx.editOrReply({
-      content: `Berhasil simulasi join member ${user?.username} `,
+      content: `Hai ${user?.globalName}, Semoga betah di Akatsuki!`,
+      files: [
+        new AttachmentBuilder({
+          type: "buffer",
+          resolvable: img,
+          filename: `welcomeimage.png`,
+        }),
+      ],
       flags: MessageFlags.Ephemeral,
     });
   }

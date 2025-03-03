@@ -1,8 +1,19 @@
-import { Builder, Font, JSX } from "canvacord";
+/** @jsx JSX.createElement */
+/** @jsxFrag JSX.Fragment */
+
+import { Builder, Font, FontFactory, JSX, loadImage } from "canvacord";
 
 const pathFonts = `${process.cwd()}/assets/fonts`;
 
-export default class WelcomeChannel extends Builder {
+interface Props {
+  displayName: string;
+  avatar: string;
+  message: string;
+  title: string;
+  background?: string;
+}
+
+export default class WelcomeChannel extends Builder<Props> {
   constructor() {
     super(700, 350);
     Font.fromFileSync(
@@ -10,30 +21,45 @@ export default class WelcomeChannel extends Builder {
       "PoppinsRegular",
     );
     Font.fromFileSync(`${pathFonts}/Poppins/Poppins-Bold.ttf`, "PoppinsBold");
+    if (!FontFactory.size) Font.loadDefault();
+    this.bootstrap({
+      displayName: "",
+      avatar: "",
+      title: "",
+      message: "",
+      background: "",
+    });
+  }
+
+  setTitle(value: string) {
+    this.options.set("title", value);
+    return this;
+  }
+  setDisplayName(value: string) {
+    this.options.set("displayName", value);
+    return this;
+  }
+
+  setAvatar(value: string) {
+    this.options.set("avatar", value);
+    return this;
+  }
+
+  setMessage(value: string) {
+    this.options.set("message", value);
+    return this;
+  }
+
+  setBackground(value: string) {
+    this.options.set("background", value);
+    return this;
   }
 
   override async render() {
-    return JSX.createElement(
-      "div",
-      {
-        style: {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "white",
-          width: "100%",
-          height: "100%",
-        },
-      },
-      JSX.createElement(
-        "h1",
-        {
-          style: {
-            fontSize: "10px",
-          },
-        },
-        "halo",
-      ),
-    );
+    const { displayName, avatar, message, title } = this.options.getOptions();
+
+    const image = await loadImage(avatar);
+
+    return <h1>{ message } </h1>;
   }
 }
