@@ -8,6 +8,7 @@
     "@slipher/cooldown": "^0.0.2",
     "@tobyg74/tiktok-api-dl": "^1.2.3",
     "axios": "^1.8.1",
+    "canvacord": "^6.0.2",
     "dotenv": "^16.4.7",
     "google-translate-api-x": "^10.7.2",
     "mongoose": "^8.11.0",
@@ -29,10 +30,13 @@
     "build": "tsc",
     "start": "node ."
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "bot",
+    "discord"
+  ],
+  "author": "Akin",
   "license": "ISC",
-  "description": "",
+  "description": "Bot Discord dengan fitur yang berlimpah",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
