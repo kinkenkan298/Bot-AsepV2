@@ -7,7 +7,7 @@ import {
   UsingClient,
 } from "seyfert";
 import downloadFile from "../downloadFile.js";
-import { existsSync, unlinkSync } from "fs";
+import { existsSync, mkdirSync, unlinkSync } from "fs";
 import { MessageFlags } from "seyfert/lib/types/index.js";
 import {
   convertToProperCodec,
@@ -27,16 +27,6 @@ export const sendSlideShow = async (
       content: "⏳ Sedang Memprosess konten slide show...",
       allowed_mentions: { replied_user: false },
     });
-    if (!context.referencedMessage) throw new Error("tidak tahu");
-    try {
-      await client.messages.edit(
-        context.referencedMessage.id,
-        context.channelId,
-        {
-          flags: MessageFlags.SuppressEmbeds,
-        },
-      );
-    } catch {}
   }
   const batchFile = 10;
   const tempPath: string[] = [];
@@ -48,6 +38,8 @@ export const sendSlideShow = async (
 
   const audio = await (await fetch(audio_item.variants[0].href)).arrayBuffer();
   const now = Date.now();
+  if (!existsSync(`${process.cwd()}/temp/`))
+    mkdirSync(`${process.cwd()}/temp/`);
   await writeFile(`${process.cwd()}/temp/${now}-audio.mp4`, Buffer.from(audio));
   const ogg_filename = await convertToProperCodec(
     `${process.cwd()}/temp/${now}-audio.mp4`,
@@ -78,6 +70,18 @@ export const sendSlideShow = async (
         files: image_path,
       });
     } else {
+      if (!context.referencedMessage) throw new Error("tidak tahu");
+      try {
+        await client.messages.edit(
+          context.referencedMessage.id,
+          context.channelId,
+          {
+            flags: MessageFlags.SuppressEmbeds,
+          },
+        );
+      } catch (e) {
+        client.logger.error(e);
+      }
       if (nu == 0) {
         await client.messages.edit(context.id, context.channelId, {
           content: "✅ Berhasil upload!",
