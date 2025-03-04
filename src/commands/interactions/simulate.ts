@@ -40,7 +40,7 @@ export default class SimulateJoinOut extends Command {
       )
       .setTitle("Selamat Datang")
       .setDescription(`Hallo ${user.username}`, "#FBFBFB")
-      .setAvatarBorder("#3C3D37")
+      .setAvatarBorder("#ffffff")
       .build();
     await ctx.editOrReply({
       content: `Hai ${user?.globalName}, Semoga betah di Akatsuki!`,

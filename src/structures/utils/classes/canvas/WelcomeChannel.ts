@@ -264,8 +264,8 @@ export default class WelcomeCanvas implements IWelcome {
           await loadImage(this.background.background),
           10,
           10,
-          canvas.width - 20,
-          canvas.height - 20,
+          canvas.width,
+          canvas.height,
         );
       } catch {
         throw new Error(
