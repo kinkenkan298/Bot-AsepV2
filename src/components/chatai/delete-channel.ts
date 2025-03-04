@@ -5,7 +5,7 @@ import ms from "ms";
 
 export default class DeleteChatAIComponent extends ComponentCommand {
   componentType = "Button" as const;
-  filter(ctx: ComponentContext<typeof this.componentType>) {
+  override filter(ctx: ComponentContext<typeof this.componentType>) {
     return ctx.customId === "delete-channel-ai";
   }
   override async run(ctx: ComponentContext<typeof this.componentType>) {

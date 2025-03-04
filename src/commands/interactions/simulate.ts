@@ -25,7 +25,7 @@ export default class SimulateJoinOut extends Command {
   override async run(ctx: CommandContext<typeof options>) {
     await ctx.deferReply(true);
 
-    const { options, client, guildId } = ctx;
+    const { options } = ctx;
     const { user } = options;
 
     const canvas = await new WelcomeCanvas()

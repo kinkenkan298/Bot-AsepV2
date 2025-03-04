@@ -313,11 +313,13 @@ export default class WelcomeCanvas implements IWelcome {
 
         do {
           i--;
+          // @ts-ignore
           array[1].unshift(substrings[i]);
           substrings.pop();
         } while (substrings.join(" ").length > 35);
 
         array[0] = substrings.join(" ");
+        // @ts-ignore
         array[1] = array[1].join(" ");
         return array;
       })(this.description.data);

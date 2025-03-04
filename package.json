@@ -3,6 +3,9 @@
   "version": "2.0.1",
   "main": "dist/index.js",
   "type": "module",
+  "engines": {
+        "node": ">= 22.11.0"
+    },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@napi-rs/canvas": "^0.1.67",
@@ -41,5 +44,18 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "imports": {
+    "#asep/*": "./dist/*",
+    "#asep/client": "./dist/structures/client/AsepClient.js",
+    "#asep/types": "./dist/structures/utils/types/index.js",
+    "#asep/middlwares": "./dist/middlewares/index.js",
+    "#asep/errors": "./dist/structures/utils/Errors.js",
+    "#asep/decorators": "./dist/structures/utils/Decorators.js",
+    "#asep/listeners": "./dist/structures/listeners/index.js",
+    "#asep/index": "./dist/index.js",
+    "#asep/data/*": "./dist/structures/utils/data/*",
+    "#asep/utils/*": "./dist/structures/utils/*",
+    "#asep/schemas/*": "./dist/structures/schemas/*"
   }
 }

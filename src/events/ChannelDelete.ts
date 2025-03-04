@@ -3,8 +3,9 @@ import { createEvent } from "seyfert";
 
 export default createEvent({
   data: { name: "channelDelete" },
-  run: async (channel, client) => {
+  run: async (channel) => {
     const channelId = channel.id;
+    // @ts-ignore
     const guildId = channel.guildId;
     const findChannel = await ChatAIModel.findOne({ guildId });
     if (!findChannel) return;

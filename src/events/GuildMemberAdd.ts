@@ -2,7 +2,7 @@ import { createEvent } from "seyfert";
 
 export default createEvent({
   data: { name: "guildMemberAdd" },
-  async run(member, client) {
+  async run() {
     console.log("ada yang keluar bang!");
   },
 });

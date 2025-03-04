@@ -12,7 +12,7 @@ import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
 export default class ChatAIComponent extends ComponentCommand {
   componentType = "Button" as const;
 
-  filter(ctx: ComponentContext<typeof this.componentType>) {
+  override filter(ctx: ComponentContext<typeof this.componentType>) {
     return ctx.customId === "chataiasep";
   }
   public override async run(ctx: ComponentContext<typeof this.componentType>) {

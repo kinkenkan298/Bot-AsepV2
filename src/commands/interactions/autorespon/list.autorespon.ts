@@ -39,12 +39,14 @@ export default class ListSubcommand extends SubCommand {
         return;
       }
       const fields: Array<{ name: string; value: string }> = [];
-      fetchData.autorespon.forEach((d, i) => {
-        fields.push({
-          name: `${Formatter.underline("Pesan")}  ${i + 1}`,
-          value: `Pesan: ${d.pesan}\nBalesan: ${d.balesan}`,
-        });
-      });
+      fetchData.autorespon.forEach(
+        (d: { pesan: string; balesan: string }, i: number) => {
+          fields.push({
+            name: `${Formatter.underline("Pesan")}  ${i + 1}`,
+            value: `Pesan: ${d.pesan}\nBalesan: ${d.balesan}`,
+          });
+        },
+      );
       await ctx.editOrReply({
         embeds: [
           embed
