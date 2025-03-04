@@ -3,7 +3,6 @@ import {
   AttachmentBuilder,
   CommandContext,
   Message,
-  RawFile,
   UsingClient,
 } from "seyfert";
 import downloadFile from "../downloadFile.js";
@@ -100,12 +99,7 @@ export const sendSlideShow = async (
   tempPath.push(`${process.cwd()}/temp/${now}-audio.mp4`);
   tempPath.push(ogg_filename);
 
-  const voice_message = await sendVoiceMessage(
-    context.channelId,
-    ogg_filename,
-    duration,
-    waveform,
-  );
+  await sendVoiceMessage(context.channelId, ogg_filename, duration, waveform);
 
   setTimeout(() => {
     for (const pth of tempPath) {

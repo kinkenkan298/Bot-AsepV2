@@ -12,7 +12,7 @@ import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
 export default class ChatAIComponent extends ComponentCommand {
   componentType = "Button" as const;
 
-  filter(ctx: ComponentContext<typeof this.componentType>) {
+  override filter(ctx: ComponentContext<typeof this.componentType>) {
     return ctx.customId === "chataiasep";
   }
   public override async run(ctx: ComponentContext<typeof this.componentType>) {
@@ -89,7 +89,9 @@ export default class ChatAIComponent extends ComponentCommand {
       flags: MessageFlags.Ephemeral,
     });
     await ctx.author.write({
-      content: "Berhasil buat channel pada tanggal: " + Date.now(),
+      content:
+        "Berhasil buat channel pada tanggal: " +
+        new Date(Date.now()).toISOString(),
     });
   }
 }
