@@ -306,7 +306,7 @@ export default class WelcomeCanvas implements IWelcome {
     ctx.textAlign = "center";
 
     if (this.description.data.length > 35) {
-      const texts = (function (string: string) {
+      const texts = (function(string: string) {
         const array = [string, []];
         const substrings = string.split(" ");
         let i = substrings.length;
