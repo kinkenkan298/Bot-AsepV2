@@ -1,6 +1,11 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
-import { ActionRow, Button, Formatter } from "seyfert";
-import { ComponentCommand, ComponentContext } from "seyfert";
+import {
+  ComponentCommand,
+  type ComponentContext,
+  ActionRow,
+  Button,
+  Formatter,
+} from "seyfert";
 import {
   ButtonStyle,
   ChannelType,
@@ -46,7 +51,7 @@ export default class ChatAIComponent extends ComponentCommand {
       topic: `Asep AI dengan  ${ctx.author.username}`,
       permission_overwrites: [
         {
-          id: ctx.guildId!,
+          id: guildId!,
           deny: "0",
           type: OverwriteType.Member,
         },
@@ -56,7 +61,9 @@ export default class ChatAIComponent extends ComponentCommand {
           type: OverwriteType.Member,
         },
       ],
+      nsfw: false,
     });
+
     const channelId = channel?.id;
     const newChatChannel = {
       authorId,
@@ -91,7 +98,7 @@ export default class ChatAIComponent extends ComponentCommand {
     await ctx.author.write({
       content:
         "Berhasil buat channel pada tanggal: " +
-        new Date(Date.now()).toISOString(),
+        new Date(Date.now()).toTimeString(),
     });
   }
 }

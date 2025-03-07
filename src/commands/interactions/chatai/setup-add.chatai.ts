@@ -43,17 +43,27 @@ export class SetupAdd extends SubCommand {
             ],
           });
         } else {
-          fetchData.category = category.id;
-          fetchData.save();
-          await ctx.editOrReply({
-            embeds: [
-              embed
-                .setTitle(
-                  `Category channel berhasil diupdate ke ${Formatter.channelMention(category.id)}`,
-                )
-                .setType("success"),
-            ],
-          });
+          try {
+            await fetchData.updateOne({ category: category.id });
+            await ctx.editOrReply({
+              embeds: [
+                embed
+                  .setTitle(
+                    `Category channel berhasil diupdate ke ${Formatter.channelMention(category.id)}`,
+                  )
+                  .setType("success"),
+              ],
+            });
+          } catch (e) {
+            client.logger.error(e);
+            await ctx.editOrReply({
+              embeds: [
+                embed
+                  .setTitle("Terjadi kesalahan pada update category channel!")
+                  .setType("error"),
+              ],
+            });
+          }
         }
       } else {
         const newData: HydratedDocument<ChatAI> = new ChatAIModel({

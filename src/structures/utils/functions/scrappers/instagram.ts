@@ -40,7 +40,7 @@ const scrapperInstagram = async (url: string): Promise<Array<ItemMedia>> => {
 
   const data = req.data;
   if (Array.isArray(data)) {
-    const result = [];
+    const result: ItemMedia[] = [];
     for (const urlMedia of data) {
       for (const urla of urlMedia.url) {
         const imageInfo = await validateAndGetContentLength(urla.url);
