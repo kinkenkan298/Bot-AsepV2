@@ -8,6 +8,8 @@ import {
   SubCommand,
 } from "seyfert";
 import ReactRoleModel from "#asep/structures/schemas/guilds/ReactRoleModel.js";
+import { HydratedDocument } from "mongoose";
+import { IReactRole } from "#asep/structures/utils/interfeces/IReactRole.js";
 
 const options = {
   messageid: createStringOption({
@@ -78,7 +80,7 @@ export default class ReactRoleAdd extends SubCommand {
 
     emojiId = customEmoji ? customEmoji.id : emoji;
 
-    const reactRoleModel = new ReactRoleModel({
+    const reactRoleModel: HydratedDocument<IReactRole> = new ReactRoleModel({
       guildId,
       messageId: message.id,
       roleId: role.id,

@@ -9,6 +9,8 @@ import {
 } from "seyfert";
 import { ChannelType } from "seyfert/lib/types/index.js";
 import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
+import { HydratedDocument } from "mongoose";
+import { ChatAI } from "#asep/structures/utils/interfeces/IChatAI.js";
 
 const options = {
   category: createChannelOption({
@@ -35,40 +37,46 @@ export class SetupAdd extends SubCommand {
         if (oldCategory === category.id) {
           await ctx.editOrReply({
             embeds: [
-              embed.setTitle('Category channel sudah ada di database!').setType('error')
-            ]
-          })
+              embed
+                .setTitle("Category channel sudah ada di database!")
+                .setType("error"),
+            ],
+          });
         } else {
           fetchData.category = category.id;
-          fetchData.save()
+          fetchData.save();
           await ctx.editOrReply({
             embeds: [
               embed
-                .setTitle(`Category channel berhasil diupdate ke ${Formatter.channelMention(category.id)}`)
-                .setType('success')
-            ]
-          })
+                .setTitle(
+                  `Category channel berhasil diupdate ke ${Formatter.channelMention(category.id)}`,
+                )
+                .setType("success"),
+            ],
+          });
         }
       } else {
-        const newData = new ChatAIModel({
+        const newData: HydratedDocument<ChatAI> = new ChatAIModel({
           guildId,
-          category: category.id
-        })
+          category: category.id,
+        });
         try {
           await newData.save();
           await ctx.editOrReply({
             embeds: [
               embed
-                .setTitle('Berhasil menambahkan category channel untuk chatai!')
-                .setType('success')
-            ]
-          })
+                .setTitle("Berhasil menambahkan category channel untuk chatai!")
+                .setType("success"),
+            ],
+          });
         } catch (e) {
-          client.logger.error(e)
+          client.logger.error(e);
           await ctx.editOrReply({
             embeds: [
-              embed.setTitle('Terjadi kesalahan dalame menyimpan ke database!').setType('error')
-            ]
+              embed
+                .setTitle("Terjadi kesalahan dalame menyimpan ke database!")
+                .setType("error"),
+            ],
           });
         }
       }

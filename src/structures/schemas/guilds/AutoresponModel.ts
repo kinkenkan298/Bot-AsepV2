@@ -1,7 +1,8 @@
 import { IAutorespon } from "#asep/structures/utils/interfeces/IAutorespon.js";
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model, Model } from "mongoose";
 
-const AutoresponSchema = new Schema<IAutorespon>(
+type AutoresponModel = Model<IAutorespon>;
+const autoresponSchema: Schema = new Schema<IAutorespon, AutoresponModel>(
   {
     guildId: {
       type: String,
@@ -23,7 +24,9 @@ const AutoresponSchema = new Schema<IAutorespon>(
   { timestamps: true },
 );
 
-const AutoresponModel =
-  mongoose.models.autorespon ||
-  model<IAutorespon>("autorespon", AutoresponSchema, "AutoRespon");
-export default AutoresponModel;
+const autoresponModel: AutoresponModel = model<IAutorespon, AutoresponModel>(
+  "autorespon",
+  autoresponSchema,
+  "AutoRespon",
+);
+export default autoresponModel;

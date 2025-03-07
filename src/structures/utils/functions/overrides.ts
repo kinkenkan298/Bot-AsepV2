@@ -27,7 +27,7 @@ export async function onOptionsError(ctx: AnyContext) {
   const options = formatOptions(command.options, SemuaPesan.events.optionTypes);
 
   const embed = new Embed()
-    .setColor("Red")
+    .setColor(Configuration.colors.errors)
     .setThumbnail(ctx.author.avatarURL())
     .setDescription(
       SemuaPesan.events.invalidOptions({

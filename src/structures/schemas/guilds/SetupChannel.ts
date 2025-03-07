@@ -1,25 +1,29 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Model } from "mongoose";
 import { IWelcome } from "#asep/structures/utils/interfeces/ISetupChannel.js";
 
-const setupChannelSchema = new Schema<IWelcome>({
-  guildId: {
-    type: String,
-    required: true,
+type SetupChannelModel = Model<IWelcome>;
+const setupChannelSchema = new Schema<IWelcome, SetupChannelModel>(
+  {
+    guildId: {
+      type: String,
+      required: true,
+    },
+    channelId: {
+      type: String,
+      required: true,
+    },
+    customMessage: {
+      type: String,
+      required: true,
+    },
   },
-  channelId: {
-    type: String,
-    required: true,
-  },
-  customMessage: {
-    type: String,
-    required: true,
-  },
-});
+  { timestamps: true },
+);
 
-const SetupChannelModel = model(
+const setupChannelModel: SetupChannelModel = model<IWelcome, SetupChannelModel>(
   "setupchannel",
   setupChannelSchema,
   "SetupChannel",
 );
 
-export default SetupChannelModel;
+export default setupChannelModel;

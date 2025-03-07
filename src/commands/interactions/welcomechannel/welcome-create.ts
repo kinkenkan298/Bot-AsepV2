@@ -10,6 +10,8 @@ import {
 import { ChannelType } from "seyfert/lib/types/index.js";
 import SetupChannelModel from "#asep/structures/schemas/guilds/SetupChannel.js";
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
+import { HydratedDocument } from "mongoose";
+import { IWelcome } from "#asep/structures/utils/interfeces/ISetupChannel.js";
 
 const options = {
   channel: createChannelOption({
@@ -37,7 +39,7 @@ export default class SetupWelcomeCommand extends SubCommand {
     const data = await SetupChannelModel.findOne({ guildId });
 
     if (!data) {
-      const newData = new SetupChannelModel({
+      const newData: HydratedDocument<IWelcome> = new SetupChannelModel({
         guildId,
         channelId: targetChannel.id,
         customMessage: customMessage

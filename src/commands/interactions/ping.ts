@@ -9,7 +9,7 @@ import { Command, type CommandContext, Declare, Embed } from "seyfert";
   integrationTypes: ["GuildInstall"],
 })
 @Cooldown({
-  interval: ms("10s"),
+  interval: ms("5s"),
   type: CooldownType.User,
   uses: {
     default: 1,

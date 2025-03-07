@@ -1,7 +1,8 @@
 import { ChatAI } from "#asep/structures/utils/interfeces/IChatAI.js";
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model, Model } from "mongoose";
 
-const schema = new Schema<ChatAI>(
+type ChatAIModel = Model<ChatAI>;
+const schema = new Schema<ChatAI, ChatAIModel>(
   {
     guildId: {
       type: String,
@@ -25,6 +26,10 @@ const schema = new Schema<ChatAI>(
   { timestamps: true },
 );
 
-const ChatAIModel = mongoose.models.chatai || model("chatai", schema, "ChatAI");
+const chatAIModel: ChatAIModel = model<ChatAI, ChatAIModel>(
+  "chatai",
+  schema,
+  "ChatAI",
+);
 
-export default ChatAIModel;
+export default chatAIModel;

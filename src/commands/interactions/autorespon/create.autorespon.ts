@@ -1,6 +1,8 @@
 import AutoresponModel from "#asep/schemas/guilds/AutoresponModel.js";
+import { IAutorespon } from "#asep/structures/utils/interfeces/IAutorespon.js";
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
 import { Cooldown, CooldownType } from "@slipher/cooldown";
+import { HydratedDocument } from "mongoose";
 import ms from "ms";
 import {
   CommandContext,
@@ -37,14 +39,14 @@ export default class CreateSubcommand extends SubCommand {
   public override async run(
     ctx: CommandContext<typeof options>,
   ): Promise<void> {
-    const { client, interaction, guildId, options } = ctx;
-    if (!interaction?.replied) await ctx.deferReply();
+    await ctx.deferReply();
+    const { client, guildId, options } = ctx;
     const { pesan, balesan } = options;
 
     const fetchData = await AutoresponModel.findOne({ guildId });
     const embed = new AsepEmbed({}, client);
     if (!fetchData) {
-      const newData = new AutoresponModel({
+      const newData: HydratedDocument<IAutorespon> = new AutoresponModel({
         guildId,
         autorespon: [
           {
@@ -93,8 +95,8 @@ export default class CreateSubcommand extends SubCommand {
     }
 
     const NewMessage: Record<string, string> = {
-      pesan: pesan,
-      balesan: balesan,
+      pesan,
+      balesan,
     };
 
     await AutoresponModel.findOneAndUpdate(
