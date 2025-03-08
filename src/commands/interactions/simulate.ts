@@ -1,57 +1,63 @@
-import WelcomeCanvas from "#asep/structures/utils/classes/canvas/WelcomeChannel.js";
+import { AsepOptions } from "#asep/structures/utils/Decorators.js";
 import {
-  AttachmentBuilder,
   Command,
-  CommandContext,
+  type CommandContext,
+  createStringOption,
   createUserOption,
   Declare,
+  GuildMember,
   Options,
 } from "seyfert";
-import { MessageFlags } from "seyfert/lib/types/index.js";
 
 const options = {
   user: createUserOption({
     description: "user yang mau di simulasi join! ",
     required: true,
   }),
+  event: createStringOption({
+    description: "Event apa yang mau ditrigger",
+    required: true,
+    choices: [
+      {
+        name: "join",
+        value: "GUILD_MEMBER_ADD",
+      },
+      {
+        name: "out",
+        value: "GUILD_MEMBER_REMOVE",
+      },
+    ] as const,
+  }),
 };
 
 @Declare({
   name: "simulate-join",
   description: "simulasi member ketika join guild!",
+  defaultMemberPermissions: ["ManageGuild", "Administrator"],
+  contexts: ["Guild"],
 })
+@AsepOptions({ onlyDeveloper: true })
 @Options(options)
 export default class SimulateJoinOut extends Command {
   override async run(ctx: CommandContext<typeof options>) {
+    const { options, client } = ctx;
+    const { user, event } = options;
+
     await ctx.deferReply(true);
 
-    const { options } = ctx;
-    const { user } = options;
-
-    const canvas = await new WelcomeCanvas()
-      .setAvatar(
-        user.avatarURL({
-          extension: "png",
-        }),
-      )
-      .setBackground(
-        "image",
-        `https://i.pinimg.com/736x/48/03/b4/4803b4bd485b83c1944af16cfd744f6c.jpg`,
-      )
-      .setTitle("Selamat Datang")
-      .setDescription(`Hallo ${user.username}`, "#FBFBFB")
-      .setAvatarBorder("#ffffff")
-      .build();
-    await ctx.editOrReply({
-      content: `Hai ${user?.globalName}, Semoga betah di Akatsuki!`,
-      files: [
-        new AttachmentBuilder({
-          type: "buffer",
-          resolvable: canvas,
-          filename: `welcomeimage.png`,
-        }),
-      ],
-      flags: MessageFlags.Ephemeral,
-    });
+    switch (event) {
+      case "GUILD_MEMBER_ADD":
+      case "GUILD_MEMBER_REMOVE": {
+        await client.events!.values[event]?.run(
+          user as unknown as GuildMember,
+          client,
+          ctx.shardId,
+        );
+        await ctx.editOrReply({
+          content: "Berhasil trigger event guild!",
+        });
+        break;
+      }
+    }
   }
 }

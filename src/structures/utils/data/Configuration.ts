@@ -7,9 +7,8 @@ export const Configuration: IAsepConfiguration = {
     "1290584043896832054", // client id gwe
   ],
   guildIds: [
-    "1043102701778653264", // akatsuki
-    "1302586858202595359", // my lop
     "1335076333629210624", // bot development
+    "1043102701778653264", // akatsuki
   ],
   cache: {
     filename: "commands.json",
