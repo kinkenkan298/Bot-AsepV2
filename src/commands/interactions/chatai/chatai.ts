@@ -1,6 +1,6 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
-import { Cooldown, CooldownType } from "@slipher/cooldown";
-import ms from "ms";
+import { AsepOptions } from "#asep/structures/utils/Decorators.js";
+import { AsepCategory } from "#asep/structures/utils/types/index.js";
 import { ActionRow, Button, Command, CommandContext, Declare } from "seyfert";
 import { ButtonStyle, ComponentType } from "seyfert/lib/types/index.js";
 
@@ -8,13 +8,7 @@ import { ButtonStyle, ComponentType } from "seyfert/lib/types/index.js";
   name: "chatai",
   description: "chat bersama asep kun!",
 })
-@Cooldown({
-  interval: ms("60s"),
-  type: CooldownType.User,
-  uses: {
-    default: 1,
-  },
-})
+@AsepOptions({ cooldown: 60, category: AsepCategory.User })
 export default class AICommand extends Command {
   public override async run(ctx: CommandContext) {
     const { client } = ctx;

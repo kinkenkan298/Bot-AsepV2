@@ -1,9 +1,7 @@
 import AutoresponModel from "#asep/schemas/guilds/AutoresponModel.js";
 import { IAutorespon } from "#asep/structures/utils/interfeces/IAutorespon.js";
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
-import { Cooldown, CooldownType } from "@slipher/cooldown";
 import { HydratedDocument } from "mongoose";
-import ms from "ms";
 import {
   CommandContext,
   createStringOption,
@@ -26,13 +24,6 @@ const options = {
 @Declare({
   name: "create",
   description: "buat pesan otomatis",
-})
-@Cooldown({
-  interval: ms("10s"),
-  type: CooldownType.User,
-  uses: {
-    default: 1,
-  },
 })
 @Options(options)
 export default class CreateSubcommand extends SubCommand {

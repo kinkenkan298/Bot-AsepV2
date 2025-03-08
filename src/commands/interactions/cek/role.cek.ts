@@ -1,6 +1,4 @@
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
-import { Cooldown, CooldownType } from "@slipher/cooldown";
-import ms from "ms";
 import {
   SubCommand,
   type CommandContext,
@@ -20,13 +18,6 @@ const options = {
 @Declare({
   name: "role",
   description: "cek role apa kamu!",
-})
-@Cooldown({
-  interval: ms("5s"),
-  type: CooldownType.User,
-  uses: {
-    default: 2,
-  },
 })
 @Options(options)
 export default class RoleCommand extends SubCommand {

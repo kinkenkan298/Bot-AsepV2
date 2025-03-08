@@ -1,5 +1,5 @@
-import { Cooldown, CooldownType } from "@slipher/cooldown";
-import ms from "ms";
+import { AsepOptions } from "#asep/structures/utils/Decorators.js";
+import { AsepCategory } from "#asep/structures/utils/types/index.js";
 import { AutoLoad, Command, Declare } from "seyfert";
 
 @Declare({
@@ -9,11 +9,5 @@ import { AutoLoad, Command, Declare } from "seyfert";
   defaultMemberPermissions: ["ManageGuild", "Administrator"],
 })
 @AutoLoad()
-@Cooldown({
-  interval: ms("15s"),
-  type: CooldownType.Guild,
-  uses: {
-    default: 3,
-  },
-})
+@AsepOptions({ cooldown: 10, category: AsepCategory.Guild })
 export default class AutoresponCommand extends Command {}

@@ -1,7 +1,5 @@
 import AutoresponModel from "#asep/schemas/guilds/AutoresponModel.js";
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
-import { Cooldown, CooldownType } from "@slipher/cooldown";
-import ms from "ms";
 import {
   CommandContext,
   Declare,
@@ -11,13 +9,6 @@ import {
 @Declare({
   name: "delete-all",
   description: "hapus semua pesan otomatis",
-})
-@Cooldown({
-  interval: ms("10s"),
-  type: CooldownType.User,
-  uses: {
-    default: 1,
-  },
 })
 export default class DeleteAllSubcommand extends SubCommand {
   public override async run(ctx: CommandContext) {

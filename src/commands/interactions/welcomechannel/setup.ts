@@ -1,3 +1,5 @@
+import { AsepOptions } from "#asep/structures/utils/Decorators.js";
+import { AsepCategory } from "#asep/structures/utils/types/index.js";
 import { AutoLoad, Command, Declare, Groups, IgnoreCommand } from "seyfert";
 
 @Declare({
@@ -15,4 +17,5 @@ import { AutoLoad, Command, Declare, Groups, IgnoreCommand } from "seyfert";
     defaultDescription: "set up channel for leave member!",
   },
 })
+@AsepOptions({ cooldown: 20, category: AsepCategory.Guild })
 export default class SetupChanmel extends Command {}

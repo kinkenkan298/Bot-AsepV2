@@ -1,4 +1,4 @@
-import { Client } from "seyfert";
+import { Client, LimitedCollection } from "seyfert";
 import {
   ActivityType,
   ApplicationCommandType,
@@ -10,11 +10,11 @@ import { HandleCommand } from "seyfert/lib/commands/handle.js";
 import { Yuna } from "yunaforseyfert";
 import { onRunError, onOptionsError } from "#asep/utils/functions/overrides.js";
 import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
-import { CooldownManager } from "@slipher/cooldown";
 import { ASEP_MIKIR } from "#asep/data/Constants.js";
 
 export class AsepClient extends Client<true> {
-  public cooldown: CooldownManager;
+  public readonly cooldowns: LimitedCollection<string, number> =
+    new LimitedCollection();
 
   public readonly config: IAsepConfiguration = Configuration;
   public readyTimestamp: number = 0;
@@ -55,7 +55,6 @@ export class AsepClient extends Client<true> {
         activities: [{ name: "Asep V2", type: ActivityType.Listening }],
       }),
     });
-    this.cooldown = new CooldownManager(this);
 
     this.run();
   }

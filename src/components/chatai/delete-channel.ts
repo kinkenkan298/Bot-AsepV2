@@ -1,7 +1,6 @@
 import { ComponentCommand, ComponentContext } from "seyfert";
 import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
-import ms from "ms";
 
 export default class DeleteChatAIComponent extends ComponentCommand {
   componentType = "Button" as const;
@@ -41,7 +40,7 @@ export default class DeleteChatAIComponent extends ComponentCommand {
               { guildId },
               { $pull: { channels: { authorId } } },
             );
-          }, ms("10s"));
+          }, 10 * 1000);
           return;
         }
       }

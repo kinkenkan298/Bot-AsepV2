@@ -1,12 +1,14 @@
-import { sendSlideShow } from "#asep/structures/utils/functions/client/sendSlideShow.js";
 import downloadFile from "#asep/structures/utils/functions/downloadFile.js";
-import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
+import {
+  sendSingleVideo,
+  sendSlideShow,
+} from "#asep/structures/utils/functions/index.js";
 import {
   getContent,
   SearchForTask,
 } from "#asep/structures/utils/functions/utils.js";
 import type { ItemMedia } from "#asep/structures/utils/types/index.js";
-import { AttachmentBuilder, Message, UsingClient } from "seyfert";
+import { AttachmentBuilder, type Message, UsingClient } from "seyfert";
 
 export const ASosmedListener = async (
   message: Message,

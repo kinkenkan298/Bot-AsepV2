@@ -1,8 +1,10 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { InstaURLRegex } from "#asep/structures/utils/data/Constants.js";
-import { sendSlideShow } from "#asep/structures/utils/functions/client/sendSlideShow.js";
-import { sendSingleVideo } from "#asep/structures/utils/functions/index.js";
-import { extractInstagram } from "#asep/structures/utils/functions/scrappers/instagram.js";
+import {
+  sendSingleVideo,
+  sendSlideShow,
+  extractInstagram,
+} from "#asep/structures/utils/functions/index.js";
 import { ItemMedia } from "#asep/structures/utils/types/index.js";
 import {
   CommandContext,

@@ -1,20 +1,11 @@
 import AutoresponModel from "#asep/schemas/guilds/AutoresponModel.js";
 import { AsepEmbed } from "#asep/utils/classes/AsepEmbed.js";
-import { Cooldown, CooldownType } from "@slipher/cooldown";
-import ms from "ms";
 import { CommandContext, Declare, Formatter, SubCommand } from "seyfert";
 
 @Declare({
   name: "list",
   description: "list apa saja pesan otomatis yang tersedia!",
   contexts: ["Guild"],
-})
-@Cooldown({
-  interval: ms("10s"),
-  type: CooldownType.User,
-  uses: {
-    default: 1,
-  },
 })
 export default class ListSubcommand extends SubCommand {
   public override async run(ctx: CommandContext) {

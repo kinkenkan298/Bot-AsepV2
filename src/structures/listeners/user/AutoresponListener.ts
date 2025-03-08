@@ -1,6 +1,6 @@
 import AutoresponModel from "#asep/schemas/guilds/AutoresponModel.js";
 import ChatAIModel from "#asep/structures/schemas/user/ChatAIModel.js";
-import { Message, UsingClient } from "seyfert";
+import type { Message, UsingClient } from "seyfert";
 
 export async function AutoresponListener(
   client: UsingClient,
@@ -12,7 +12,7 @@ export async function AutoresponListener(
   try {
     const fetchData = await AutoresponModel.findOne({ guildId });
     const findChannel = await ChatAIModel.findOne({ guildId });
-    if (!fetchData) return;
+    if (!fetchData || !findChannel) return;
     if (findChannel.channels.length > 0) {
       for (const ChatChannel of findChannel.channels) {
         if (ChatChannel.channelId !== channelId) {

@@ -1,3 +1,5 @@
+import { AsepOptions } from "#asep/structures/utils/Decorators.js";
+import { AsepCategory } from "#asep/structures/utils/types/index.js";
 import { AutoLoad, Command, Declare, IgnoreCommand } from "seyfert";
 
 @Declare({
@@ -6,4 +8,5 @@ import { AutoLoad, Command, Declare, IgnoreCommand } from "seyfert";
   ignore: IgnoreCommand.Message,
 })
 @AutoLoad()
+@AsepOptions({ cooldown: 10, category: AsepCategory.User })
 export default class ASosmed extends Command {}

@@ -1,9 +1,9 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
 import { TiktokURLregex } from "#asep/structures/utils/data/Constants.js";
-import { sendSlideShow } from "#asep/structures/utils/functions/client/sendSlideShow.js";
 import {
   extractTiktok,
   sendSingleVideo,
+  sendSlideShow,
 } from "#asep/structures/utils/functions/index.js";
 import { ItemMedia } from "#asep/structures/utils/types/index.js";
 import {

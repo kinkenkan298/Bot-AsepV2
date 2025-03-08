@@ -1,25 +1,37 @@
-import { Configuration } from "#asep/data/Configuration.js";
-import { createMiddleware, Formatter } from "seyfert";
-import { TimestampStyle } from "seyfert/lib/common/index.js";
+import { Configuration } from "#asep/structures/utils/data/Configuration.js";
+import { getCollectionKey } from "#asep/structures/utils/functions/utils.js";
+import { createMiddleware, Embed } from "seyfert";
 import { MessageFlags } from "seyfert/lib/types/index.js";
 
 export const checkCooldown = createMiddleware<void>(
   async ({ context, next, pass }) => {
     if (context.isComponent()) return next();
-    const inCooldown = context.client.cooldown.context(context);
-    if (typeof inCooldown == "number") {
-      const msg = `Kamu sedang cooldown, tolong tunggu ${Formatter.timestamp(new Date(Date.now() + inCooldown), TimestampStyle.RelativeTime)}`;
-      await context.editOrReply({
+    const { client, command } = context;
+
+    const { cooldowns } = client;
+    if (!command) return pass();
+    if (command.onlyDeveloper) return next();
+
+    const cooldown = (command.cooldown ?? 3) * 1000;
+
+    const now = Date.now();
+
+    const data = cooldowns.get(getCollectionKey(context));
+    if (data && now < data) {
+      const time = Math.floor(data / 1000);
+      context.editOrReply({
         flags: MessageFlags.Ephemeral,
         embeds: [
-          {
-            description: msg,
+          new Embed({
+            title: "Kamu sedang cooldown!",
+            description: `Tunggu <t:${time}:R> (<t:${time}:t>) untuk menggunakan nya lagi!`,
             color: Configuration.colors.errors,
-          },
+          }),
         ],
       });
       return pass();
     }
+    cooldowns.set(getCollectionKey(context), now + cooldown, cooldown);
     return next();
   },
 );

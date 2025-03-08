@@ -1,5 +1,4 @@
 import { BOT_ACTIVITIES } from "#asep/data/Constants.js";
-import ms from "ms";
 import { UsingClient } from "seyfert";
 import { PresenceUpdateStatus } from "seyfert/lib/types/index.js";
 
@@ -26,7 +25,7 @@ export function changePresence(client: UsingClient) {
         },
       ],
     });
-  }, ms("30s"));
+  }, 30 * 1000);
   client.gateway.setPresence({
     activities: [BOT_ACTIVITIES[0]],
     afk: false,
