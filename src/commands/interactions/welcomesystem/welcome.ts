@@ -12,13 +12,13 @@ import {
   Embed,
   Formatter,
   Modal,
-  TextInput,
   WebhookMessage,
 } from "seyfert";
 import { Message } from "seyfert/lib/structures/Message.js";
 import {
   ButtonStyle,
   ChannelType,
+  ComponentType,
   TextInputStyle,
 } from "seyfert/lib/types/index.js";
 
@@ -93,21 +93,29 @@ export default class WelcomeSystem extends Command {
         true,
       );
     }
-    const text = new TextInput({
-      custom_id: "customWelcomeMessage",
-      label: "Ubah pesan welcome channel",
-      placeholder: "Isi teks nya disini ...",
-      style: TextInputStyle.Paragraph,
-      required: false,
-      value:
-        data?.customMessage ||
-        `Hello {username}, Semoga betah di {server-name}`,
-      max_length: 200,
-    });
     const modalMessage = new Modal({
       custom_id: "edit_message",
       title: "Setting welcome message!",
-    }).setComponents([new ActionRow<TextInput>().setComponents([text])]);
+      components: [
+        {
+          components: [
+            {
+              custom_id: "customWelcomeMessage",
+              label: "Ubah pesan welcome channel",
+              placeholder: "Isi teks nya disini ...",
+              style: TextInputStyle.Paragraph,
+              required: false,
+              value:
+                data?.customMessage ||
+                `Hello {username}, Semoga betah di {server-name}`,
+              max_length: 200,
+              type: ComponentType.TextInput,
+            },
+          ],
+          type: ComponentType.ActionRow,
+        },
+      ],
+    });
     const collect = message.createComponentCollector({
       filter: (i) => i.user.id === ctx.author.id,
       onStop(reason, refresh) {
