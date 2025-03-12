@@ -12,20 +12,18 @@ export async function AutoresponListener(
   try {
     const fetchData = await AutoresponModel.findOne({ guildId });
     const findChannel = await ChatAIModel.findOne({ guildId });
-    if (!fetchData || !findChannel) return;
-    if (findChannel.channels.length > 0) {
-      for (const ChatChannel of findChannel.channels) {
-        if (ChatChannel.channelId !== channelId) {
-          for (const data of fetchData.autorespon) {
-            const { pesan, balesan } = data;
-            if (msg === pesan) message.reply({ content: balesan });
-          }
-        }
+    let channels: string[] = [];
+    if (findChannel && findChannel.channels) {
+      for (const channel of findChannel.channels) {
+        channels.push(channel.channelId);
       }
-    } else {
-      for (const data of fetchData.autorespon) {
-        const { pesan, balesan } = data;
-        if (msg === pesan) message.reply({ content: balesan });
+    }
+    if (!channels.includes(channelId)) {
+      if (fetchData) {
+        for (const data of fetchData.autorespon) {
+          const { pesan, balesan } = data;
+          if (msg === pesan) message.reply({ content: balesan });
+        }
       }
     }
   } catch (e) {

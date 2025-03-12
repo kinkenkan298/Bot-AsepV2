@@ -136,6 +136,30 @@ export default class AutoresponCommand extends Command {
 
       await i.modal(modal);
     });
+    collector.run("delete_autorespon", async (i) => {
+      if (!i.isButton()) return;
+      const modal = new Modal({
+        custom_id: "deleteModal_autorespon",
+        title: "Tambah Autoresponder!",
+        components: [
+          {
+            components: [
+              {
+                required: true,
+                label: "Trigger pesan!",
+                placeholder: "trigger pesan ....",
+                type: ComponentType.TextInput,
+                style: TextInputStyle.Short,
+                custom_id: "trigger_autorespon",
+              },
+            ],
+            type: ComponentType.ActionRow,
+          },
+        ],
+      });
+
+      await i.modal(modal);
+    });
 
     collector.run("list_autorespon", async (i) => {
       if (!i.isButton()) return;
@@ -150,7 +174,7 @@ export default class AutoresponCommand extends Command {
       try {
         const data = await autoresponModel.findOne({ guildId });
         if (!data || data.autorespon.length === 0 || !data.autorespon) {
-          await ctx.editOrReply({
+          await i.editOrReply({
             embeds: [
               new AsepEmbed(
                 {
@@ -182,7 +206,7 @@ export default class AutoresponCommand extends Command {
         });
       } catch (e) {
         client.logger.error(e);
-        await ctx.editOrReply({
+        await i.editOrReply({
           embeds: [
             new AsepEmbed(
               {

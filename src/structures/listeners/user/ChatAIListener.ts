@@ -79,9 +79,6 @@ export async function ChatAIListerner(client: UsingClient, message: Message) {
           }
         }
       });
-      historyChat.forEach((e) => {
-        console.log(e.parts[0].text);
-      });
       client.channels
         .typing(channelId)
         .then(async () => {
