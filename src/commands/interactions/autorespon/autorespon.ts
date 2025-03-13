@@ -39,41 +39,42 @@ export default class AutoresponCommand extends Command {
       },
       client,
     ).setType("info");
+    const buttonRow = [
+      new ActionRow<Button>().setComponents([
+        new Button({
+          custom_id: "create_autorespon",
+          label: "Add Autorespon",
+          style: ButtonStyle.Success,
+        }),
+        new Button({
+          custom_id: "list_autorespon",
+          label: "List Autorespon",
+          style: ButtonStyle.Primary,
+        }),
+        new Button({
+          custom_id: "delete_autorespon",
+          label: "Remove response",
+          style: ButtonStyle.Danger,
+        }),
+      ]),
+      new ActionRow<Button>().setComponents([
+        new Button({
+          custom_id: "delete_all_autorespon",
+          label: "Delete All Autorespon",
+          style: ButtonStyle.Secondary,
+        }),
+        new Button({
+          custom_id: "stopevent_autorespon",
+          label: "Stop Event!",
+          style: ButtonStyle.Danger,
+        }),
+      ]),
+    ];
 
     const message = await ctx.editOrReply(
       {
         embeds: [embed],
-        components: [
-          new ActionRow<Button>().setComponents([
-            new Button({
-              custom_id: "create_autorespon",
-              label: "Add Autorespon",
-              style: ButtonStyle.Success,
-            }),
-            new Button({
-              custom_id: "list_autorespon",
-              label: "List Autorespon",
-              style: ButtonStyle.Primary,
-            }),
-            new Button({
-              custom_id: "delete_autorespon",
-              label: "Remove response",
-              style: ButtonStyle.Danger,
-            }),
-          ]),
-          new ActionRow<Button>().setComponents([
-            new Button({
-              custom_id: "delete_all_autorespon",
-              label: "Delete All Autorespon",
-              style: ButtonStyle.Secondary,
-            }),
-            new Button({
-              custom_id: "stopevent_autorespon",
-              label: "Stop Event!",
-              style: ButtonStyle.Danger,
-            }),
-          ]),
-        ],
+        components: buttonRow,
       },
       true,
     );
@@ -214,6 +215,88 @@ export default class AutoresponCommand extends Command {
               },
               client,
             ).setType("error"),
+          ],
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+    });
+    collector.run("delete_all_autorespon", async (i) => {
+      if (!i.isButton()) return;
+      const data = await autoresponModel.findOne({ guildId });
+      if (!data || data.autorespon.length === 0) {
+        await i.editOrReply({
+          embeds: [
+            new AsepEmbed({}, client)
+              .setTitle("Tidak ada pesan otomatis!")
+              .setDescription(
+                "Kamu belum memiliki AutoResponder!\nSilakan cek lagi jika ingin dihapus semua!",
+              )
+              .setType("error"),
+          ],
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      }
+      await i.update({
+        embeds: [
+          embed
+            .setDescription(
+              "Apakah kamu yakin ingin menghapus semua AutoResponder?\nJika iya click tombol di bawah ini!",
+            )
+            .setType("error"),
+        ],
+        components: [
+          new ActionRow<Button>().setComponents([
+            new Button({
+              custom_id: "delete_all-skip",
+              style: ButtonStyle.Secondary,
+              label: "No!",
+            }),
+            new Button({
+              custom_id: "delete_all-confirm",
+              style: ButtonStyle.Danger,
+              label: "Yes!",
+            }),
+          ]),
+        ],
+      });
+    });
+    collector.run("delete_all-skip", async (i) => {
+      if (!i.isButton()) return;
+      await i.update({
+        embeds: [
+          embed
+            .setDescription(
+              "Setting autoresponder guild kamu !\nAgar guild lebih interaktif!",
+            )
+            .setType("info"),
+        ],
+        components: buttonRow,
+      });
+    });
+    collector.run("delete_all-confirm", async (i) => {
+      if (!i.isButton()) return;
+      try {
+        await autoresponModel.deleteMany({ guildId });
+        await i.update({
+          embeds: [
+            embed
+              .setDescription("Berhasil hapus semua pesan otomatis!")
+              .setType("success"),
+          ],
+          components: buttonRow,
+        });
+      } catch (e) {
+        client.logger.error(e);
+        await i.editOrReply({
+          embeds: [
+            new AsepEmbed(
+              {
+                title: "Terjadi kesalahan tidak terduga!",
+                description: "Silakan coba lagi beberapa saat!",
+              },
+              client,
+            ),
           ],
           flags: MessageFlags.Ephemeral,
         });
