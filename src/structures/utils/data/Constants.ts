@@ -9,6 +9,9 @@ const packageJson = JSON.parse(await readFile("./package.json", "utf-8"));
 
 export const BOT_VERSION: string = packageJson.version;
 
+export const DEBUG_MODE: boolean = process.argv.includes("--debug-mode");
+export const DEV_MODE: boolean = process.argv.includes("--dev-mode");
+
 export const responsesToxic: string[] = [
   "Jaga bicara, ya!",
   "Kata-kata seperti itu tidak baik.",
