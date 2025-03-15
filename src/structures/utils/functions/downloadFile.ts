@@ -8,7 +8,7 @@ export default async function downloadFile(
   paths?: string,
 ): Promise<string> {
   try {
-    const PathToDir = paths ? paths : `${process.cwd()}/temp/`;
+    const PathToDir = paths ? paths : join(process.cwd(), "temp/");
     if (!existsSync(PathToDir)) {
       mkdirSync(PathToDir);
     }

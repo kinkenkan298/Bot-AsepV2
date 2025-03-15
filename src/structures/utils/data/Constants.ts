@@ -46,28 +46,6 @@ export const TiktokURLregex =
   /https:\/\/(?:m|www|vm|vt|lite)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/;
 export const InstaURLRegex =
   /(?:https?:\/\/)?(?:www\.|m\.)?instagram\.com(?:\/.*)?/i;
-export const SemuaPesan = {
-  events: {
-    invalidOptions: ({ options, list }: TOptions) =>
-      `\`❌\` Opsi atau parameter yang diterima salah !.\n-# - **Required**: \`<>\`\n-# - **Optional**: \`[]\`\n\n\`📋\` **Cara pakai**:\n ${options}\n\`📢\` **Opsi yang tersedia!**:\n${list}`,
-    optionTypes: {
-      [ApplicationCommandOptionType.Subcommand]: "subcommand",
-      [ApplicationCommandOptionType.SubcommandGroup]: "subcommand group",
-      [ApplicationCommandOptionType.String]: "string",
-      [ApplicationCommandOptionType.Integer]: "integer",
-      [ApplicationCommandOptionType.Boolean]: "boolean",
-      [ApplicationCommandOptionType.User]: "@user",
-      [ApplicationCommandOptionType.Channel]: "#channel",
-      [ApplicationCommandOptionType.Role]: "@role",
-      [ApplicationCommandOptionType.Mentionable]: "@mentionable",
-      [ApplicationCommandOptionType.Number]: "number",
-      [ApplicationCommandOptionType.Attachment]: "attachment",
-    } satisfies Record<ApplicationCommandOptionType, string>,
-    commandsError:
-      "Terjadi kesalahan tidak terduga!! Tolong tunggu sebentar !!",
-  },
-};
-type TOptions = { options: string; list: string };
 
 export enum GoogleLocales {
   ABKHAZ = "ab",

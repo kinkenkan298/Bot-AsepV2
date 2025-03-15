@@ -44,8 +44,8 @@ export class AsepClient extends Client<true> {
           }`,
         }),
         defaults: {
-          onOptionsError,
           onRunError,
+          onOptionsError,
         },
       },
       presence: () => ({
