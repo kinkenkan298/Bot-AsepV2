@@ -1,6 +1,12 @@
 import { AsepOptions } from "#asep/structures/utils/Decorators.js";
 import { AsepCategory } from "#asep/structures/utils/types/index.js";
-import { Command, type CommandContext, Declare, Embed } from "seyfert";
+import {
+  Command,
+  type CommandContext,
+  Declare,
+  Embed,
+  LocalesT,
+} from "seyfert";
 
 @Declare({
   name: "ping",
@@ -9,9 +15,12 @@ import { Command, type CommandContext, Declare, Embed } from "seyfert";
   integrationTypes: ["GuildInstall"],
 })
 @AsepOptions({ cooldown: 10, category: AsepCategory.User })
+@LocalesT("languages.ping.name", "languages.ping.description")
 export default class PingCommand extends Command {
   public override async run(ctx: CommandContext): Promise<void> {
     const { client } = ctx;
+
+    const { messages } = await ctx.getLocale();
 
     const embed = new Embed()
       .setColor(client.config.colors.extra)

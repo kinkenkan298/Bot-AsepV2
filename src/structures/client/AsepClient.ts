@@ -11,6 +11,7 @@ import { Yuna } from "yunaforseyfert";
 import { onRunError, onOptionsError } from "#asep/utils/functions/overrides.js";
 import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
 import { ASEP_MIKIR } from "#asep/data/Constants.js";
+import { asepExtendContext } from "../utils/functions/utils.js";
 
 export class AsepClient extends Client<true> {
   public readonly cooldowns: LimitedCollection<string, number> =
@@ -21,6 +22,7 @@ export class AsepClient extends Client<true> {
 
   constructor() {
     super({
+      context: asepExtendContext,
       globalMiddlewares: ["checkCooldown"],
       allowedMentions: {
         replied_user: false,
@@ -92,6 +94,10 @@ export class AsepClient extends Client<true> {
           client: this.client,
           logResult: true,
         });
+      },
+      langs: {
+        default: this.config.defaultLocale,
+        aliases: {},
       },
     });
 

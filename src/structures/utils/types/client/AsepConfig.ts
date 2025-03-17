@@ -18,6 +18,7 @@ interface IAsepChannels {
 
 export interface IAsepConfiguration {
   defaultPrefix: string;
+  defaultLocale: string;
   prefixes: string[];
   guildIds: string[];
   developerIds: string[];

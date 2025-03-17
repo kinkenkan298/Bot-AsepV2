@@ -1,7 +1,9 @@
 import type { AsepClient } from "#asep/client";
 import type { AsepMiddleware } from "#asep/middlwares";
 import type { AsepOptions } from "#asep/types";
-import type { ParseClient, ParseMiddlewares } from "seyfert";
+import type { ParseClient, ParseLocales, ParseMiddlewares } from "seyfert";
+import type DefaultLang from "#asep/languages/id-ID.js";
+import { asepExtendContext } from "./structures/utils/functions/utils.js";
 
 declare module "seyfert" {
   interface InternalOptions {
@@ -19,5 +21,6 @@ declare module "seyfert" {
   interface RegisteredMiddlewares
     extends ParseMiddlewares<typeof AsepMiddleware> {}
   interface GlobalMetadata extends ParseMiddlewares<typeof AsepMiddleware> {}
-  //interface ExtendContext extends ReturnType<typeof customExtend>
+  interface DefaultLocale extends ParseLocales<typeof DefaultLang> {}
+  interface ExtendContext extends ReturnType<typeof asepExtendContext> {}
 }

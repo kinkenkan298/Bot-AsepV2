@@ -50,6 +50,20 @@ export default {
           [AsepCategory.Music]: "Musik",
         } satisfies Record<AsepCategory, string>,
       },
+      autorespon: {
+        embed: {
+          title: "Konfigurasi Autoresponder!",
+          description:
+            "Setting autoresponder guild kamu !\nAgar guild lebih interaktif!",
+        },
+        buttons: {
+          add: "Tambah Pesan otomatis!",
+          list: "Daftar Pesan otomatis!",
+          delete: "Hapus Pesan otomatis!",
+          delete_all: "Hapus Semua Pesan otomatis!",
+          stop: "Berhenti Konfigurasi!",
+        },
+      },
     },
     events: {
       inCooldown: ({ time }: ICooldown) =>
@@ -145,19 +159,23 @@ export default {
         },
       },
     },
-    languages: {
-      ping: {
-        name: "ping",
-        description: "Dapatkan Bot Asep Ping!",
+  },
+  languages: {
+    ping: {
+      name: "ping",
+      description: "Dapatkan Bot Asep Ping!",
+    },
+    translate: {
+      name: "translate",
+      description: "Ubah bahasa mu ke bahasa yang diinginkan!",
+      option: {
+        name: "to",
+        description: "Negara Tujuan ubah bahasa!",
       },
-      translate: {
-        name: "translate",
-        description: "Ubah bahasa mu ke bahasa yang diinginkan!",
-        option: {
-          name: "to",
-          description: "Negara Tujuan ubah bahasa!",
-        },
-      },
+    },
+    autorespon: {
+      name: "autorespon",
+      description: "Buat Pesan otomatis agar guild lebih interaktif!",
     },
   },
 };

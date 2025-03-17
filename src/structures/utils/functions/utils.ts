@@ -1,10 +1,16 @@
-import { AnyContext } from "seyfert";
+import { AnyContext, DefaultLocale, extendContext } from "seyfert";
 import { Task } from "../types/index.js";
 import { extractTiktok } from "./scrappers/tiktok.js";
 import { extractInstagram } from "./scrappers/instagram.js";
 
 export const sliceText = (text: string, max: number = 100) =>
   text.length > max ? `${text.slice(0, max)}...` : max;
+
+export const asepExtendContext = extendContext((interaction) => ({
+  getLocale: async (): Promise<DefaultLocale> =>
+    interaction.client.t(interaction.client.config.defaultLocale).get(),
+  getLocaleSring: () => interaction.client.config.defaultLocale,
+}));
 
 export const getCollectionKey = (ctx: AnyContext): string => {
   const authorId = ctx.author.id;

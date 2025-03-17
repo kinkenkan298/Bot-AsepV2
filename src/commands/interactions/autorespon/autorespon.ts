@@ -9,7 +9,10 @@ import {
   type CommandContext,
   Declare,
   Formatter,
+  LocalesT,
   Modal,
+  SelectMenu,
+  StringSelectMenu,
 } from "seyfert";
 import {
   ButtonStyle,
@@ -25,17 +28,19 @@ import {
   defaultMemberPermissions: ["ManageGuild", "Administrator"],
 })
 @AsepOptions({ cooldown: 10, category: AsepCategory.Guild })
+@LocalesT("languages.autorespon.name", "languages.autorespon.description")
 export default class AutoresponCommand extends Command {
   public override async run(ctx: CommandContext) {
     const { client, guildId } = ctx;
 
     await ctx.deferReply();
 
+    const { messages } = await ctx.getLocale();
+
     const embed = new AsepEmbed(
       {
-        title: "Konfigurasi Autoresponder!",
-        description:
-          "Setting autoresponder guild kamu !\nAgar guild lebih interaktif!",
+        title: messages.commands.autorespon.embed.title,
+        description: messages.commands.autorespon.embed.description,
       },
       client,
     ).setType("info");
@@ -43,29 +48,29 @@ export default class AutoresponCommand extends Command {
       new ActionRow<Button>().setComponents([
         new Button({
           custom_id: "create_autorespon",
-          label: "Add Autorespon",
+          label: messages.commands.autorespon.buttons.add,
           style: ButtonStyle.Success,
         }),
         new Button({
           custom_id: "list_autorespon",
-          label: "List Autorespon",
+          label: messages.commands.autorespon.buttons.list,
           style: ButtonStyle.Primary,
         }),
         new Button({
           custom_id: "delete_autorespon",
-          label: "Remove response",
+          label: messages.commands.autorespon.buttons.delete,
           style: ButtonStyle.Danger,
         }),
       ]),
       new ActionRow<Button>().setComponents([
         new Button({
           custom_id: "delete_all_autorespon",
-          label: "Delete All Autorespon",
+          label: messages.commands.autorespon.buttons.delete_all,
           style: ButtonStyle.Secondary,
         }),
         new Button({
           custom_id: "stopevent_autorespon",
-          label: "Stop Event!",
+          label: messages.commands.autorespon.buttons.stop,
           style: ButtonStyle.Danger,
         }),
       ]),
@@ -81,10 +86,37 @@ export default class AutoresponCommand extends Command {
 
     const collector = message.createComponentCollector({
       filter: (i) => i.user.id === ctx.author.id,
-      onStop(reason, refresh) {
-        if (reason === "idle") return refresh();
+      onPass: async (interaction) => {
+        await interaction.write({
+          flags: MessageFlags.Ephemeral,
+          embeds: [
+            {
+              description: messages.events.noCollector({
+                userId: ctx.author.id,
+              }),
+              color: client.config.colors.errors,
+            },
+          ],
+        });
       },
-      idle: 60000,
+      onStop: async (reason) => {
+        if (reason === "idle") {
+          const components: ActionRow<Button>[] = message!.components.map(
+            (component) => {
+              new ActionRow({
+                components: component.components.map((row) => {
+                  row.data.disabled = true;
+                  return row.toJSON();
+                }),
+              });
+            },
+          );
+          await client.messages.edit(ctx.message!.id, ctx.channelId, {
+            components,
+          });
+        }
+      },
+      idle: 60e3,
     });
     collector.run("stopevent_autorespon", async (i) => {
       if (!i.isButton()) return;
