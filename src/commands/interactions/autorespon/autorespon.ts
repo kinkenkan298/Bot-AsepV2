@@ -10,9 +10,10 @@ import {
   Declare,
   Formatter,
   LocalesT,
+  Message,
+  MessageBuilderComponents,
   Modal,
-  SelectMenu,
-  StringSelectMenu,
+  WebhookMessage,
 } from "seyfert";
 import {
   ButtonStyle,
@@ -43,9 +44,9 @@ export default class AutoresponCommand extends Command {
         description: messages.commands.autorespon.embed.description,
       },
       client,
-    ).setType("info");
-    const buttonRow = [
-      new ActionRow<Button>().setComponents([
+    );
+    const buttonRow: ActionRow<MessageBuilderComponents>[] = [
+      new ActionRow<MessageBuilderComponents>().addComponents(
         new Button({
           custom_id: "create_autorespon",
           label: messages.commands.autorespon.buttons.add,
@@ -61,8 +62,6 @@ export default class AutoresponCommand extends Command {
           label: messages.commands.autorespon.buttons.delete,
           style: ButtonStyle.Danger,
         }),
-      ]),
-      new ActionRow<Button>().setComponents([
         new Button({
           custom_id: "delete_all_autorespon",
           label: messages.commands.autorespon.buttons.delete_all,
@@ -73,11 +72,12 @@ export default class AutoresponCommand extends Command {
           label: messages.commands.autorespon.buttons.stop,
           style: ButtonStyle.Danger,
         }),
-      ]),
+      ),
     ];
 
-    const message = await ctx.editOrReply(
+    const message: Message | WebhookMessage = await ctx.editOrReply(
       {
+        content: "",
         embeds: [embed],
         components: buttonRow,
       },
@@ -100,20 +100,20 @@ export default class AutoresponCommand extends Command {
         });
       },
       onStop: async (reason) => {
-        if (reason === "idle") {
-          const components: ActionRow<Button>[] = message!.components.map(
-            (component) => {
-              new ActionRow({
-                components: component.components.map((row) => {
-                  row.data.disabled = true;
-                  return row.toJSON();
-                }),
-              });
-            },
-          );
-          await client.messages.edit(ctx.message!.id, ctx.channelId, {
-            components,
-          });
+        if (message && reason === "idle") {
+          await client.messages
+            .edit(message.id, message.channelId, {
+              components: message.components.map(
+                (component) =>
+                  new ActionRow({
+                    components: component.components.map((row) => {
+                      row.data.disabled = true;
+                      return row.toJSON();
+                    }),
+                  }),
+              ),
+            })
+            .catch(() => null);
         }
       },
       idle: 60e3,
@@ -202,7 +202,7 @@ export default class AutoresponCommand extends Command {
           description: "Berikut ini list pesan otomatis yang ada di guild!",
         },
         client,
-      ).setType("info");
+      );
 
       try {
         const data = await autoresponModel.findOne({ guildId });
@@ -213,9 +213,10 @@ export default class AutoresponCommand extends Command {
                 {
                   title: "Tidak ada pesan otomatis!!!",
                   description: "Silakan tambah data pesan dulu!",
+                  theme: "error",
                 },
                 client,
-              ).setType("error"),
+              ),
             ],
             flags: MessageFlags.Ephemeral,
           });
@@ -244,9 +245,10 @@ export default class AutoresponCommand extends Command {
             new AsepEmbed(
               {
                 title: "Terjadi kesalahan dalam query database!",
+                theme: "error",
               },
               client,
-            ).setType("error"),
+            ),
           ],
           flags: MessageFlags.Ephemeral,
         });
@@ -258,12 +260,15 @@ export default class AutoresponCommand extends Command {
       if (!data || data.autorespon.length === 0) {
         await i.editOrReply({
           embeds: [
-            new AsepEmbed({}, client)
-              .setTitle("Tidak ada pesan otomatis!")
-              .setDescription(
-                "Kamu belum memiliki AutoResponder!\nSilakan cek lagi jika ingin dihapus semua!",
-              )
-              .setType("error"),
+            new AsepEmbed(
+              {
+                title: "Tidak ada pesan otomatis!",
+                description:
+                  "Kamu belum memiliki AutoResponder!\nSilakan cek lagi jika ingin dihapus semua!",
+                theme: "error",
+              },
+              client,
+            ),
           ],
           flags: MessageFlags.Ephemeral,
         });
@@ -326,6 +331,7 @@ export default class AutoresponCommand extends Command {
               {
                 title: "Terjadi kesalahan tidak terduga!",
                 description: "Silakan coba lagi beberapa saat!",
+                theme: "error",
               },
               client,
             ),
