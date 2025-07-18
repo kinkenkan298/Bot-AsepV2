@@ -10,8 +10,8 @@ export default createEvent({
   async run(message, client) {
     if (message.author.bot) return;
 
-    await ASosmedListener(message, client);
+    // await ASosmedListener(message, client);
     await AutoresponListener(client, message);
-    await ChatAIListerner(client, message);
+    // await ChatAIListerner(client, message);
   },
 });

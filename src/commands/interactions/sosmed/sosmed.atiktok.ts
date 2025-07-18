@@ -1,5 +1,5 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
-import { TiktokURLregex } from "#asep/structures/utils/data/Constants.js";
+import { Constants } from "#asep/structures/utils/data/Constants.js";
 import {
   extractTiktok,
   sendSingleVideo,
@@ -22,7 +22,8 @@ const options = {
     description: "url tiktok!",
     required: true,
     value(data, ok: OKFunction<URL>, fail) {
-      if (TiktokURLregex.test(data.value)) return ok(new URL(data.value));
+      if (Constants.TiktokURLregex.test(data.value))
+        return ok(new URL(data.value));
       fail("yang kamu masukan bukan url tiktok!");
     },
   }),

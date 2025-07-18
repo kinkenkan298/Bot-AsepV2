@@ -1,52 +1,68 @@
 import { readFile } from "node:fs/promises";
 import {
   ActivityType,
-  ApplicationCommandOptionType,
   GatewayActivityUpdateData,
 } from "seyfert/lib/types/index.js";
+import { TConstants, WorkingDirectory } from "../types/index.js";
 
 const packageJson = JSON.parse(await readFile("./package.json", "utf-8"));
 
-export const BOT_VERSION: string = packageJson.version;
-
-export const DEBUG_MODE: boolean = process.argv.includes("--debug-mode");
-export const DEV_MODE: boolean = process.argv.includes("--dev-mode");
-
-export const responsesToxic: string[] = [
-  "Jaga bicara, ya!",
-  "Kata-kata seperti itu tidak baik.",
-  "Ayo bicara dengan sopan.",
-  "Kurangi kata kasar, ok?",
-  "Jangan toxic, ya!",
-  "Heh! Jangan toxic!",
-  "Kata-kata kasar tidak diperbolehkan.",
-];
-
-export const commandsBot: string = `
+export const Constants: TConstants = {
+  Version: packageJson.version,
+  Debug: process.argv.includes("--debug-mode"),
+  Dev: process.argv.includes("--dev-mode"),
+  responsesToxic: [
+    "Jaga bicara, ya!",
+    "Kata-kata seperti itu tidak baik.",
+    "Ayo bicara dengan sopan.",
+    "Kurangi kata kasar, ok?",
+    "Jangan toxic, ya!",
+    "Heh! Jangan toxic!",
+    "Kata-kata kasar tidak diperbolehkan.",
+  ],
+  commandsBot: `
  **/cek role @user**: Menampilkan role pengguna yang ditandai
  **/cek perintah**: Menampilkan daftar perintah yang didukung oleh bot
  **/chatai**: perintah untuk chat dengan ai pribadi asep
  **/atiktok <url>**: untuk mengirim video tiktok
  **/translate <teks> <negara>**: untuk menejermahkan bahasa alien yang ada di guild
-`;
-
-export const ASEP_MIKIR: string[] = [
-  "sedang memprosess ...",
-  "sedang berak ...",
-  "lagi mikir ...",
-  "nahan boker ....",
-];
-
-export const BOT_ACTIVITIES: GatewayActivityUpdateData[] = [
-  { name: "Freedom", type: ActivityType.Listening },
-  { name: "Sedang dalam {guilds} guilds", type: ActivityType.Listening },
-];
-
-export const TiktokURLregex =
-  /https:\/\/(?:m|www|vm|vt|lite)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/;
-export const InstaURLRegex =
-  /(?:https?:\/\/)?(?:www\.|m\.)?instagram\.com(?:\/.*)?/i;
-
+`,
+  TiktokURLregex:
+    /https:\/\/(?:m|www|vm|vt|lite)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/,
+  InstaURLRegex: /(?:https?:\/\/)?(?:www\.|m\.)?instagram\.com(?:\/.*)?/i,
+  AsepMikir(): string {
+    const messages: string[] = [
+      "sedang memprosess ...",
+      "sedang berak ...",
+      "lagi mikir ...",
+      "nahan boker ....",
+    ];
+    return messages[Math.floor(Math.random() * messages.length)];
+  },
+  Activities(
+    options = { guilds: 0, users: 0, players: 0 },
+  ): GatewayActivityUpdateData[] {
+    const { guilds, users, players } = options;
+    return [
+      { name: "Freedom", type: ActivityType.Listening },
+      {
+        name: `Sedang berada dalam ${guilds} Guilds`,
+        type: ActivityType.Listening,
+      },
+    ];
+  },
+  PesanRahasia(): string {
+    const pesan: string[] = [
+      "asep sedang cebok ....",
+      "apakah itu infomasi rahasi?....",
+      "hey kamu sedang melihat apa ...",
+    ];
+    return pesan[Math.floor(Math.random() * pesan.length)];
+  },
+  WorkingDirectory(): WorkingDirectory {
+    return this.Dev ? "src" : "dist";
+  },
+};
 export enum GoogleLocales {
   ABKHAZ = "ab",
   ACEHNESE = "ace",

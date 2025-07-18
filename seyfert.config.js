@@ -1,13 +1,11 @@
 // @ts-check
 import { config } from "seyfert";
 import "dotenv/config";
-import { DEV_MODE, DEBUG_MODE } from "#asep/data/Constants.js";
-
-const base = DEV_MODE ? "src" : "dist";
+import { Constants } from "#asep/data/Constants.js";
 
 export default config.bot({
   token: process.env.TOKEN_DISCORD ?? "",
-  debug: DEBUG_MODE,
+  debug: Constants.Debug,
   intents: [
     "Guilds",
     "GuildMembers",
@@ -16,7 +14,7 @@ export default config.bot({
     "MessageContent",
   ],
   locations: {
-    base,
+    base: Constants.WorkingDirectory(),
     commands: "commands",
     events: "events",
     components: "components",

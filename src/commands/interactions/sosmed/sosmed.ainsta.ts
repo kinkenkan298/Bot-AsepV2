@@ -1,5 +1,5 @@
 import { AsepEmbed } from "#asep/structures/utils/classes/AsepEmbed.js";
-import { InstaURLRegex } from "#asep/structures/utils/data/Constants.js";
+import { Constants } from "#asep/structures/utils/data/Constants.js";
 import {
   sendSingleVideo,
   sendSlideShow,
@@ -22,7 +22,8 @@ const options = {
     description: "Link instagram yang ingin di share!",
     required: true,
     value(data, ok: OKFunction<URL>, fail) {
-      if (InstaURLRegex.test(data.value)) return ok(new URL(data.value));
+      if (Constants.InstaURLRegex.test(data.value))
+        return ok(new URL(data.value));
       fail("Tolong periksa ulang link instagram nya!");
     },
   }),

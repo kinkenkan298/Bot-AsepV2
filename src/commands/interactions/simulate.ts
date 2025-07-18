@@ -48,8 +48,8 @@ export default class SimulateJoinOut extends Command {
     switch (event) {
       case "GUILD_MEMBER_ADD":
       case "GUILD_MEMBER_REMOVE": {
-        await client.events!.values[event]?.run(
-          user as unknown as GuildMember,
+        await client.events.values[event]?.run(
+          user as never as GuildMember,
           client,
           ctx.shardId,
         );

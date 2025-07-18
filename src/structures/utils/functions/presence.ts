@@ -1,35 +1,41 @@
-import { BOT_ACTIVITIES } from "#asep/data/Constants.js";
-import { UsingClient } from "seyfert";
-import { PresenceUpdateStatus } from "seyfert/lib/types/index.js";
+import { Constants } from "#asep/data/Constants.js";
+import { Guild, UsingClient } from "seyfert";
+import {
+  GatewayActivityUpdateData,
+  PresenceUpdateStatus,
+} from "seyfert/lib/types/index.js";
+import { ms } from "./time.js";
 
 export function changePresence(client: UsingClient) {
-  let activities = 0;
+  let index: number = 0;
 
-  setInterval(() => {
-    if (activities === BOT_ACTIVITIES.length) activities = 0;
+  const array: GatewayActivityUpdateData[] = Constants.Activities();
+  setInterval((): void => {
+    if (index >= array.length) index = 0;
 
-    const guilds = client.cache.guilds?.count();
-    const users = client.cache.users?.count();
-    const randomActivities =
-      BOT_ACTIVITIES[activities++ % BOT_ACTIVITIES.length];
+    const guilds: Guild<"cached">[] = client.cache.guilds?.values() ?? [];
+    const users: number = guilds.reduce((a, b) => a + (b.memberCount ?? 0), 0);
+    const players: number = 1;
+
+    const activities: GatewayActivityUpdateData[] = Constants.Activities({
+      guilds: guilds.length,
+      users,
+      players,
+    });
+    const activity: GatewayActivityUpdateData =
+      activities[index++ % array.length];
+
     client.gateway.setPresence({
       afk: false,
       since: Date.now(),
+      activities: [activity],
       status: PresenceUpdateStatus.Online,
-      activities: [
-        {
-          ...randomActivities,
-          name: randomActivities.name
-            .replaceAll("{users}", `${users}`)
-            .replaceAll("{guilds}", `${guilds}`),
-        },
-      ],
     });
-  }, 30 * 1000);
+  }, ms("25s"));
   client.gateway.setPresence({
-    activities: [BOT_ACTIVITIES[0]],
     afk: false,
     since: Date.now(),
+    activities: [array[index]],
     status: PresenceUpdateStatus.Online,
   });
 }

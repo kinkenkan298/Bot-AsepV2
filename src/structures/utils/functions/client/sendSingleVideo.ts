@@ -28,19 +28,19 @@ export const sendSingleVideo = async (
   ) {
     isFromInteraction
       ? await context.editOrReply({
-          embeds: [
-            new AsepEmbed(
-              {
-                title: "File berukuran terlalu besar!",
-              },
-              client,
-            ).setType("error"),
-          ],
-        })
+        embeds: [
+          new AsepEmbed(
+            {
+              title: "File berukuran terlalu besar!",
+            },
+            client,
+          ).setType("error"),
+        ],
+      })
       : await client.messages.edit(context.id, context.channelId, {
-          content: "❌ File berukuran terlalu besar tidak dapat dikirim!",
-          allowed_mentions: { replied_user: false },
-        });
+        content: "❌ File berukuran terlalu besar tidak dapat dikirim!",
+        allowed_mentions: { replied_user: false },
+      });
     return;
   } else {
     if (context instanceof Message) {
@@ -58,31 +58,31 @@ export const sendSingleVideo = async (
 
       isFromInteraction
         ? await context.editOrReply({
-            files: [attachVideo],
-          })
+          files: [attachVideo],
+        })
         : await client.messages.edit(context.id, context.channelId, {
-            content: "✅ Berhasil upload!",
-            files: [attachVideo],
-            allowed_mentions: { replied_user: false },
-          });
+          content: "✅ Berhasil upload!",
+          files: [attachVideo],
+          allowed_mentions: { replied_user: false },
+        });
     } catch (e) {
       client.logger.error(e);
       isFromInteraction
         ? await context.editOrReply({
-            embeds: [
-              new AsepEmbed(
-                {
-                  title: "Gagal dalam mengirim file video!",
-                  description: "Coba ulangi lagi dari beberapa saat!",
-                },
-                client,
-              ).setType("error"),
-            ],
-          })
+          embeds: [
+            new AsepEmbed(
+              {
+                title: "Gagal dalam mengirim file video!",
+                description: "Coba ulangi lagi dari beberapa saat!",
+              },
+              client,
+            ).setType("error"),
+          ],
+        })
         : await client.messages.edit(context.id, context.channelId, {
-            content: "❌ Tidak berhasil dalam mengirim file!\nCoba lagi nanti!",
-            allowed_mentions: { replied_user: false },
-          });
+          content: "❌ Tidak berhasil dalam mengirim file!\nCoba lagi nanti!",
+          allowed_mentions: { replied_user: false },
+        });
     } finally {
       if (existsSync(downloadVideo)) unlinkSync(downloadVideo);
     }

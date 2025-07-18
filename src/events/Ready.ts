@@ -1,9 +1,19 @@
+import { Constants } from "#asep/structures/utils/data/Constants.js";
+import { changePresence } from "#asep/structures/utils/functions/presence.js";
 import mongoose from "mongoose";
 import { createEvent } from "seyfert";
 
 export default createEvent({
   data: { name: "ready", once: true },
-  run: async (user, client) => {
+  run: async (user, client, shardId) => {
+    client.readyTimestamp = Date.now();
+    client.logger.info(`API - Logged as : ${user.username}`);
+    client.logger.info(
+      `Client - ${user.username} v${Constants.Version} now ready!`,
+    );
+
+    changePresence(client);
+
     try {
       await mongoose.connect(process.env.MONGODB_URI!, {
         serverSelectionTimeoutMS: 0,
@@ -14,12 +24,13 @@ export default createEvent({
           deprecationErrors: true,
         },
       });
-      client.logger.info(`[${user.username} - Database] Koneksi berhasil !`);
-    } catch (err) {
+      client.logger.info(`[AsepDatabase - Database] Koneksi berhasil !`);
+    } catch (e) {
       client.logger.error(
-        `[${user.username} - Database] Koneksi gagal tersambung!`,
+        `[AsepDatabase - Database] Koneksi gagal tersambung!`,
       );
-      client.logger.error(err);
     }
+
+    await client.uploadCommands({ cachePath: client.config.cache.filename });
   },
 });

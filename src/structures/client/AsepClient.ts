@@ -1,7 +1,8 @@
-import { Client, LimitedCollection } from "seyfert";
+import { Client, LimitedCollection, LimitedMemoryAdapter } from "seyfert";
 import {
   ActivityType,
   ApplicationCommandType,
+  type GatewayPresenceUpdateData,
   PresenceUpdateStatus,
 } from "seyfert/lib/types/index.js";
 import { Configuration } from "#asep/data/Configuration.js";
@@ -10,8 +11,9 @@ import { HandleCommand } from "seyfert/lib/commands/handle.js";
 import { Yuna } from "yunaforseyfert";
 import { onRunError, onOptionsError } from "#asep/utils/functions/overrides.js";
 import type { IAsepConfiguration, NonGlobalCommands } from "#asep/types";
-import { ASEP_MIKIR } from "#asep/data/Constants.js";
+import { Constants } from "#asep/data/Constants.js";
 import { asepExtendContext } from "../utils/functions/utils.js";
+import { ms } from "../utils/functions/time.js";
 
 export class AsepClient extends Client<true> {
   public readonly cooldowns: LimitedCollection<string, number> =
@@ -26,7 +28,7 @@ export class AsepClient extends Client<true> {
       globalMiddlewares: ["checkCooldown"],
       allowedMentions: {
         replied_user: false,
-        parse: ["roles"],
+        parse: ["roles", "users"],
       },
       components: {
         defaults: {
@@ -41,26 +43,22 @@ export class AsepClient extends Client<true> {
           ];
         },
         deferReplyResponse: ({ client }) => ({
-          content: `<a:typing:1341113719857352805> **${client.me.username}** ${
-            ASEP_MIKIR[Math.floor(Math.random() * ASEP_MIKIR.length)]
-          }`,
+          content: `<a:typing:1341113719857352805> **${client.me.username}** ${Constants.AsepMikir()}`,
         }),
         defaults: {
           onRunError,
           onOptionsError,
         },
       },
-      presence: () => ({
+      presence: (): GatewayPresenceUpdateData => ({
         afk: false,
         since: Date.now(),
         status: PresenceUpdateStatus.Online,
         activities: [{ name: "Asep V2", type: ActivityType.Listening }],
       }),
     });
-
-    this.run();
   }
-  private async run(): Promise<"Asep"> {
+  public async run() {
     this.commands.onCommand = (file) => {
       const command = new file();
 
@@ -75,6 +73,12 @@ export class AsepClient extends Client<true> {
     this.setServices({
       middlewares: AsepMiddleware,
       cache: {
+        adapter: new LimitedMemoryAdapter({
+          message: {
+            limit: 10,
+            expire: ms("5s"),
+          },
+        }),
         disabledCache: {
           bans: true,
           stickers: true,
@@ -85,14 +89,14 @@ export class AsepClient extends Client<true> {
           useRepliedUserAsAnOption: {
             requirePing: true,
           },
-          logResult: true,
+          logResult: Constants.Debug,
           syntax: {
             namedOptions: ["-", "--"],
           },
         });
         override resolveCommandFromContent = Yuna.resolver({
           client: this.client,
-          logResult: true,
+          logResult: Constants.Debug,
         });
       },
       langs: {
@@ -102,8 +106,6 @@ export class AsepClient extends Client<true> {
     });
 
     await this.start();
-
-    return "Asep";
   }
 
   public async reload(): Promise<void> {

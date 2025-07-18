@@ -11,4 +11,8 @@ Logger.dirname = "logs";
 validasiEnv();
 
 const client = new AsepClient();
-export default client;
+export { client };
+
+(async (): Promise<void> => {
+  await client.run();
+})();

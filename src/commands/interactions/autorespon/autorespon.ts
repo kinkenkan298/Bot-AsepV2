@@ -77,7 +77,6 @@ export default class AutoresponCommand extends Command {
 
     const message: Message | WebhookMessage = await ctx.editOrReply(
       {
-        content: "",
         embeds: [embed],
         components: buttonRow,
       },
@@ -124,7 +123,7 @@ export default class AutoresponCommand extends Command {
         embeds: [
           embed
             .setTitle("Stop Konfigurasi!!")
-            .setDescription("Berhasil stop konfigurasi autoresponder!")
+            .setDescription("Stop konfigurasi autoresponder!")
             .setType("error"),
         ],
         components: [],
